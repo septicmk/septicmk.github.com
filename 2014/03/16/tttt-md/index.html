@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>tttt | Septicmk</title>
+  <title>Tag Plugins | Septicmk</title>
   <meta name="author" content="Septicmk">
   
   <meta name="description" content="== 1 ==== 2 ==== 3 ==">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="tttt"/>
+  <meta property="og:title" content="Tag Plugins"/>
   <meta property="og:site_name" content="Septicmk"/>
 
   
@@ -45,7 +45,7 @@
   <div class="container" id="container">
 	<div class="content">
 	  <div class="page-header">		
-  <h1><a class="brand" href="<%= config.root %>"><%= config.title %></a><span class="split"></span><span class="title"><%= page.title %></span></h1>
+  <h1><a class="brand" href="<%= config.root %>"><%= config.title %></a><span class="split"></span><span class="title"><%= page.title %></span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> <%= page.date.format(config.date_format) %></span></h1>
 </div>		
 
 <div class="row page">
@@ -73,8 +73,8 @@
 	  </div>
 	  
 	</div> <!-- col-md-9/col-md-12 -->
-
-</div><!-- row -->
+	
+  </div><!-- row -->
 
 
 
@@ -82,13 +82,12 @@
   </div>
   <div class="container-narrow">
 	<footer> 
-
 <p><% if (config.author){ %>
   &copy; <%= new Date().getFullYear() %> <%= config.author %>
   <% } else { %>
   &copy; <%= new Date().getFullYear() %> <%= config.title %>
   <% } %>
-      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Modified from <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
 </p>
  </footer>
   </div> <!-- container-narrow -->
