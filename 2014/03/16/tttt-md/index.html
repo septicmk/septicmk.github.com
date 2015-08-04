@@ -45,30 +45,63 @@
   <div class="container" id="container">
 	<div class="content">
 	  <div class="page-header">		
-  <h1><a class="brand" href="<%= config.root %>"><%= config.title %></a><span class="split"></span><span class="title"><%= page.title %></span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> <%= page.date.format(config.date_format) %></span></h1>
+  <h1><a class="brand" href="/">Septicmk</a><span class="split"></span><span class="title">Tag Plugins</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2014-03-16</span></h1>
 </div>		
 
 <div class="row page">
   <!-- cols -->	
-  <% if (page.toc) { %>
+  
   <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
-	<%- partial('post/toc', {page: item}) %>
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
   </div><!-- col-md-3 -->
-  <% } %>
+  
   
 
-  <% if (page.toc) { %>
+  
   <div class="col-xs-12 col-sm-9 col-md-9 note">
-	<% } else { %>
-	<div class="col-md-12">
-	  <% } %>
+	
 
 	  <!-- content -->
-	  <%- item.content %>	  
+	  <p>== 1 ==<br>== 2 ==<br>== 3 ==</p>
+	  
 
 	  <div>
   		<center>
-		  <%- partial('post/pagination', {page: item}) %>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+	
+		<li class="prev"><a href="/2015/08/04/tes/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next disabled"><a>next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
 		</center>
 	  </div>
 	  
@@ -76,20 +109,14 @@
 	
   </div><!-- row -->
 
-
-
 	</div>
   </div>
   <div class="container-narrow">
-	<footer> 
-<p><% if (config.author){ %>
-  &copy; <%= new Date().getFullYear() %> <%= config.author %>
-  <% } else { %>
-  &copy; <%= new Date().getFullYear() %> <%= config.title %>
-  <% } %>
+	<footer> <p>
+  &copy; 2015 Septicmk
+  
       with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
-</p>
- </footer>
+</p> </footer>
   </div> <!-- container-narrow -->
   
 <a id="gotop" href="#">   
