@@ -13,7 +13,8 @@ $(document).ready(function() {
 	
 	$(window).scroll(function(){  //只要窗口滚动,就触发下面代码 
         var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度 
-        if( scrollt >200 ){  //判断滚动后高度超过200px,就显示
+        var limit = document.getElementsByClassName("row page").offsetHeight - document.getElementsByClassName("col-xs-12 col-sm-3 col-md-3 toc").offsetHeight
+        if( scrollt >200 && scrollt < limit){  //判断滚动后高度超过200px,就显示
             $("#gotop").fadeIn(400); //淡出
 			$(".navbar").stop().fadeTo(400, 0.2);
         }else{
@@ -29,7 +30,8 @@ $(document).ready(function() {
 	});
     $(".navbar").mouseleave(function(){
 		var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-		if ( scrollt > 200) {
+        var limit = document.getElementsByClassName("row page").offsetHeight - document.getElementsByClassName("col-xs-12 col-sm-3 col-md-3 toc").offsetHeight
+		if ( scrollt > 200 && scroll < limit) {
 			$(".navbar").fadeTo(100, 0.2);
 		}
 	});	
