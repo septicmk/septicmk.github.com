@@ -33,12 +33,6 @@ $(document).ready(function() {
 			$(".navbar").fadeTo(100, 0.2);
 		}
 	});
-    $('#wikiTOC').affix({
-        offset: {
-            bottom: ($('#disqus_thread').outerHeight(true) + 
-                    $('.container-narrow').outerHeight(true)) + 
-                    40
-    }
 });    
 	setTitleDate();
 });
