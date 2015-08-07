@@ -28,7 +28,21 @@
                     <!-- toc -->
                     <script type="text/javascript">
 		                jQuery(document).ready(function() {
- 		                    generateWikiTOC('.note', '.toc', 2, 2);
+                                $(window).scroll(function(){
+                                    var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+                                    var limit = $(".content").height();
+                                    var flag = 0;
+                                    if (flag == 0){
+ 		                                generateWikiTOC('.note', '.toc', 2, 2);
+                                    }else{
+                                        $("#wikiTOC").remove();
+                                    }
+                                    if (scrollt > limit){
+                                        flag = 1; 
+                                    }else{
+                                        flag = 0;
+                                    }
+                            });
 		                });
                     </script>
                 </div>
