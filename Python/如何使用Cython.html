@@ -28,12 +28,12 @@
                     <!-- toc -->
                     <script type="text/javascript">
 		                jQuery(document).ready(function() {
+ 		                        generateWikiTOC('.note', '.toc', 2, 2);
                                 $(window).scroll(function(){
                                     var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
                                     var limit = $(".content").height();
                                     var flag = 0;
                                     var exist = 1;
- 		                            generateWikiTOC('.note', '.toc', 2, 2);
                                     if (flag == 0 && exist == 0){
  		                                //generateWikiTOC('.note', '.toc', 2, 2);
                                         exist = 1;
