@@ -36,7 +36,7 @@ $(document).ready(function() {
 	setTitleDate();
 });
 
-$('.sidenav').affix({
+$('.wikiTOC').affix({
     offset: {
       top: 150, 
       bottom : 800
