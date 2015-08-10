@@ -36,6 +36,15 @@ $(document).ready(function() {
 	setTitleDate();
 });
 
+$('#mytoc').affix({
+    offset: {
+      top: 150
+    , bottom: function () {
+        return (this.bottom = $('#disqus_thread').outerHeight(true) + $('.container-narrow').outerHeight(true))
+      }
+    }
+});
+
 $(window).resize(function () {
 	setTitleDate();
 })
