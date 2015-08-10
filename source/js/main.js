@@ -36,7 +36,7 @@ $(document).ready(function() {
 	setTitleDate();
 });
 
-$('.sidenav').affix({
+$('#mytoc').affix({
     offset: {
       top: 500, 
       bottom: 800
