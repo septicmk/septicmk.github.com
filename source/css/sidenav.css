@@ -58,7 +58,7 @@
 .sidenav.affix-bottom {
   position: absolute;
   top: auto;
-  /*bottom: 270px;*/
+  bottom: 270px;
 }
 
 /* Show and affix the side nav when space allows it */
