@@ -34,7 +34,7 @@ $(document).ready(function() {
 		}
 	});	
 	setTitleDate();
-$('.sidenav').affix({
+$('#mytoc').affix({
     offset: {
       top: 150, 
       bottom: 800
@@ -43,7 +43,7 @@ $('.sidenav').affix({
       }*/
     }
 });
-$('.sidenav').affix('checkPosition')
+$('#mytoc').affix('checkPosition')
 
 });
 
