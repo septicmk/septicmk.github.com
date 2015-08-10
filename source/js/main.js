@@ -34,7 +34,7 @@ $(document).ready(function() {
 		}
 	});	
 	setTitleDate();
-$('.nav').affix({
+$('#mytoc').affix({
     offset: {
       top: 500, 
       bottom: 800
