@@ -43,7 +43,6 @@ $('#mytoc').affix({
       }*/
     }
 });
-$('#mytoc').affix('checkPosition')
 
 });
 
