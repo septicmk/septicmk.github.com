@@ -36,7 +36,7 @@ $(document).ready(function() {
 	setTitleDate();
 });
 
-$('.nav').affix({
+$('.navbar').affix({
     offset: {
       top: 500, 
       bottom: 800
