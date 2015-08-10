@@ -34,8 +34,6 @@ $(document).ready(function() {
 		}
 	});	
 	setTitleDate();
-});
-
 $('.navbar').affix({
     offset: {
       top: 500, 
@@ -45,6 +43,9 @@ $('.navbar').affix({
       }*/
     }
 });
+
+});
+
 
 $(window).resize(function () {
 	setTitleDate();
