@@ -36,7 +36,7 @@ $(document).ready(function() {
 	setTitleDate();
 });
 
-$('#mytoc').affix({
+$('#wikiTOC').affix({
     offset: {
       top: 500, 
       bottom: 800
