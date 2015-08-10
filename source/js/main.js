@@ -38,10 +38,11 @@ $(document).ready(function() {
 
 $('#mytoc').affix({
     offset: {
-      top: 150
-    , bottom: function () {
+      top: 150, 
+      bottom : 800
+    /*bottom: function () {
         return (this.bottom = $('#disqus_thread').outerHeight(true) + $('.container-narrow').outerHeight(true))
-      }
+      }*/
     }
 });
 
