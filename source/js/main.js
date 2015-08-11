@@ -34,14 +34,14 @@ $(document).ready(function() {
 		}
 	});	
 	setTitleDate();
-$('.sidenav').affix({
+/*$('.sidenav').affix({
     offset: {
       top: 150, 
       bottom: function () {
         return (this.bottom = $('#disqus_thread').outerHeight(true) + $('.container-narrow').outerHeight(true))
       }
     }
-});
+});*/
 
 });
 
