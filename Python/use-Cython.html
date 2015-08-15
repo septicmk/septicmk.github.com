@@ -37,21 +37,21 @@
                 </div>
                 <div class="col-xs-12 col-sm-9 col-md-9 note">
                     <hr>
-<p>如果需要对python代码添加C/C++的代码,我认为最优先考虑使用的应当是<a href="http://cython.org/">Cython</a>,当然也有其他的方法,比如<a href="http://segmentfault.com/a/1190000000479951#articleHeader11">这篇文章所说</a>.Cython除了能调用原生的C/C++模块外,还可以让你以python的语法来写C/C++的扩展.不过这当中有不少的Tips和Tricks值得注意.</p>
+<p>如果需要对python代码添加C/C++的代码，我认为最优先考虑使用的应当是<a href="http://cython.org/">Cython</a>，当然也有其他的方法，比如<a href="http://segmentfault。com/a/1190000000479951#articleHeader11">这篇文章所说</a>。Cython除了能调用原生的C/C++模块外，还可以让你以python的语法来写C/C++的扩展。不过这当中有不少的Tips和Tricks值得注意.</p>
 <div class="alert alert-info">
 
     <i class="fa fa-info"></i>
 
-    本文中python==2.7.10, Cython=0.22.1
+    本文中python==2.7.10， Cython=0.22.1
 </div><h2 id="toc-0">Cython怎么工作?</h2>
-<p>首先,<a href="https://docs.python.org/2/c-api/">Python-C-API</a>是Python解释器中原生的python模块,通过这个API就可以使用C/C++来编写Python扩展.不过为了使Python成功的调用C/C++模块,你得花大量的时间写低级的控制,来包裹原来的代码.而Cython所做的就是通过编译利用Python-C-API帮你完成了这个工作,并最终把它编进一个共享库文件(.so)中.使得你可以在python代码中通过<code>import</code>直接导入进来.</p>
-<p>一般来讲,在python中使用C/C++模块两种常见的场景是:</p>
+<p>首先，<a href="https://docs.python.org/2/c-api/">Python-C-API</a>是Python解释器中原生的python模块，通过这个API就可以使用C/C++来编写Python扩展。不过为了使Python成功的调用C/C++模块，你得花大量的时间写低级的控制，来包裹原来的代码。而Cython所做的就是通过编译利用Python-C-API帮你完成了这个工作，并最终把它编进一个共享库文件(.so)中。使得你可以在python代码中通过<code>import</code>直接导入进来。</p>
+<p>一般来讲，在python中使用C/C++模块两种常见的场景是:</p>
 <ul>
 <li>原来的python代码性能太差</li>
 <li>有现成的C/C++可供直接调用</li>
 </ul>
-<p>首先,你至少得写一个.pyx的文件,写好外部调用的接口函数,然后一个setup.py文件,顺利的话,会生成一个共享库文件(.so),就可以在python代码中<code>import</code>它了.<br>
-比如说,如果你要写一个add(x,y)函数,首先:</p>
+<p>首先，你至少得写一个.pyx的文件，写好外部调用的接口函数，然后一个setup.py文件，顺利的话，会生成一个共享库文件(.so)，就可以在python代码中<code>import</code>它了.<br>
+比如说，如果你要写一个add(x，y)函数，首先:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># add.pyx</span>
@@ -86,12 +86,12 @@
 2
 3</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># main.py</span>
 <span class="kn">import</span> <span class="nn">add</span>
-<span class="k">print</span> <span class="n">add</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">add</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
 <h2 id="toc-1">使用Cython语法</h2>
 <h3 id="toc-2">定义变量</h3>
-<p>使用<code>cdef</code>来定义变量,结构体,常量.</p>
+<p>使用<code>cdef</code>来定义变量，结构体，常量。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -123,17 +123,17 @@
         <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 </pre></div>
 </td></tr></table></div>
-<p>还可以使用<code>ctypedef</code>来定义类型名称</p>
+<p>还可以使用<code>ctypedef</code>来定义类型名称。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">ctypedef</span> <span class="nb">long</span> <span class="nb">long</span> <span class="n">LL</span>
 </pre></div>
 </td></tr></table></div>
 <h3 id="toc-3">函数</h3>
 <p>在Cython中有3种函数定义:</p>
 <ul>
-<li><code>def</code>: 传入python对象,返回python对象,直接调用</li>
-<li><code>cdef</code>: 传入python对象或C/C++值,返回python对象或C/C++值,不可直接调用</li>
+<li><code>def</code>: 传入python对象，返回python对象，直接调用</li>
+<li><code>cdef</code>: 传入python对象或C/C++值，返回python对象或C/C++值，不可直接调用</li>
 <li><code>cpdef</code>: 以上两者的混合<br>
-注意:只有<code>def</code>和<code>cpdef</code>定义的函数在编译后可以在python代码中直接调用,<code>cdef</code>定义的函数则不能.
+注意:只有<code>def</code>和<code>cpdef</code>定义的函数在编译后可以在python代码中直接调用，<code>cdef</code>定义的函数则不能。
 不过你可以使用<code>def</code>来对外封装:<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -147,22 +147,22 @@
   <span class="k">return</span> <span class="n">fib_in_c</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
-那么这3个函数性能如何呢,可以看<a href="http://notes-on-cython.readthedocs.org/en/latest/fibo_speed.html">这篇评测</a>    </li>
+那么这3个函数性能如何呢，可以看<a href="http://notes-on-cython.readthedocs.org/en/latest/fibo_speed.html">这篇评测</a>    </li>
 </ul>
 <div class="alert alert-info">
 
     <i class="fa fa-info"></i>
 
-    结论: 使用cdef会变得更快,基本和直接用C差不多
-</div><p>然而使用<code>cdef</code>报错不能很好的捕获异常.你可以这样使用</p>
+    结论: 使用cdef会变得更快，基本和直接用C差不多
+</div><p>然而使用<code>cdef</code>报错不能很好的捕获异常。你可以这样使用</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="nb">int</span> <span class="n">divide</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">)</span> <span class="k">except</span> <span class="mi">0</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </td></tr></table></div>
-<p>这样当该函数内部出错时,将会返回一个0.(所以此时应当避免正确的情况中有返回0的可能,以避免歧义.)</p>
+<p>这样当该函数内部出错时，将会返回一个0。(所以此时应当避免正确的情况中有返回0的可能，以避免歧义。)</p>
 <h3 id="toc-4">参数传递</h3>
-<p>如上所示,传递一个值是很简单的,只要稍稍注意一下它的类型.在python和C/C++之间有一些自动的类型转换:</p>
+<p>如上所示，传递一个值是很简单的，只要稍稍注意一下它的类型。在python和C/C++之间有一些自动的类型转换:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -180,8 +180,8 @@
 <span class="o">+-------------------------------------------------------------------------------------------+</span>
 </pre></div>
 </td></tr></table></div>
-<p>由于python的变量是动态类型,解析起来会很慢,所以建议将其显示的指定为C/C++静态类型来提升效果,具体可以看<a href="http://docs.cython.org/src/quickstart/cythonize.html">这篇</a><br>
-所谓指定静态类型,就是显示的指定变量的类型.</p>
+<p>由于python的变量是动态类型，解析起来会很慢，所以建议将其显示的指定为C/C++静态类型来提升效果，具体可以看<a href="http://docs.cython.org/src/quickstart/cythonize.html">这篇</a><br>
+所谓指定静态类型，就是显示的指定变量的类型。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -195,14 +195,14 @@
 
     <i class="fa fa-info"></i>
 
-    结论: 指定静态类型大约有35%的提速
-</div><p>另一方面,如果需要检测传入的参数不是<code>None</code>的话可以加上<code>not None</code>来检测</p>
+    结论: 指定静态类型大约有35%的提速。
+</div><p>另一方面，如果需要检测传入的参数不是<code>None</code>的话可以加上<code>not None</code>来检测</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </td></tr></table></div>
-<p>如果要向C传递一个数组来处理,大部分情况下应该是numpy的array,推荐使用Memoryview来接受python传入的numpy的array</p>
+<p>如果要向C传递一个数组来处理，大部分情况下应该是numpy的array，推荐使用Memoryview来接受python传入的numpy的array</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -230,8 +230,8 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
-<p>你几乎可以像使用numpy的array一样的使用Memoryview,不过仍然有一些限制,<a href="http://docs.cython.org/src/userguide/memoryviews.html">详细内容</a><br>
-在一些较老的资料中,你也许会见到像下面这样的写法:</p>
+<p>你几乎可以像使用numpy的array一样的使用Memoryview，不过仍然有一些限制，<a href="http://docs.cython.org/src/userguide/memoryviews.html">详细内容</a><br>
+在一些较老的资料中，你也许会见到像下面这样的写法:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">unsigned</span> <span class="n">char</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;c&quot;</span><span class="p">]</span> <span class="n">array</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
     <span class="o">...</span>
@@ -241,10 +241,10 @@
 
     <i class="fa fa-bug"></i>
 
-    虽然很明显,但还是得多加注意,Memoryview和array一样,在函数内做了修改,其原值也会修改.
-</div><p>至于python的list和dict,我个人习惯直接使用,而不指定静态类型.你也可以看看<a href="http://stackoverflow.com/questions/1528691/idiomatic-way-to-do-list-dict-in-cython?rq=1">这个问题</a>下面的一些关于如何优雅的在Cython中使用list和dict的讨论.</p>
+    虽然很明显，但还是得多加注意，Memoryview和array一样，在函数内做了修改，其原值也会修改。
+</div><p>至于python的list和dict，我个人习惯直接使用，而不指定静态类型。你也可以看看<a href="http://stackoverflow.com/questions/1528691/idiomatic-way-to-do-list-dict-in-cython?rq=1">这个问题</a>下面的一些关于如何优雅的在Cython中使用list和dict的讨论。</p>
 <h3 id="toc-5">C++和面向对象</h3>
-<p>在Cython中也可以方便的使用面向对象的方式工作,只要使用<code>cdef class</code>就能在Cython中像在pure Python中那样使用类(当然还是有些限制):</p>
+<p>在Cython中也可以方便的使用面向对象的方式工作，只要使用<code>cdef class</code>就能在Cython中像在pure Python中那样使用类(当然还是有些限制):</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -268,7 +268,7 @@
     <span class="k">return</span> <span class="n">R</span><span class="o">.</span><span class="n">area</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
-<p>值得注意的是,Cython中的类可以被pure Python中的类继承,但反过来不行.<br>
+<p>值得注意的是，Cython中的类可以被pure Python中的类继承，但反过来不行.<br>
 你还可以像下面这样设置一些属性的getter和setter</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -293,7 +293,7 @@
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">goods</span><span class="p">[:]</span>
 </pre></div>
 </td></tr></table></div>
-<p>上面还涉及到<code>__cinit__</code>这个方法和原生python的<code>__init__</code>有些区别,前者可以更快的执行,官方的例子是:</p>
+<p>上面还涉及到<code>__cinit__</code>这个方法和原生python的<code>__init__</code>有些区别，前者可以更快的执行，官方的例子是:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -317,8 +317,8 @@
 <span class="n">fast_penguin</span> <span class="o">=</span> <span class="n">Penguin</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">Penguin</span><span class="p">,</span> <span class="s">&#39;wheat&#39;</span><span class="p">)</span>  <span class="c"># note: not calling __init__() !</span>
 </pre></div>
 </td></tr></table></div>
-<p>所以最求效率的化,尽量使用<code>__cinit__</code>吧.对于经常创建/删除实例的类,可以在前面加上<code>@cython.freelist(n)</code>的装饰器.可以获得更好的性能.</p>
-<p>如果想使用C++中的STL的话,可以像下面这样:</p>
+<p>所以最求效率的化，尽量使用<code>__cinit__</code>吧。对于经常创建/删除实例的类，可以在前面加上<code>@cython.freelist(n)</code>的装饰器。可以获得更好的性能。</p>
+<p>如果想使用C++中的STL的话，可以像下面这样:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -359,7 +359,7 @@
 </pre></div>
 </td></tr></table></div>
 <h2 id="toc-6">直接使用C/C++代码</h2>
-<p>如果你恰好已经有了C部分的代码,想直接在python中调用而不是用cython自己重写的话,你只需要写一个.pyx进行简单的封装,就能达到目的.</p>
+<p>如果你恰好已经有了C部分的代码，想直接在python中调用而不是用cython自己重写的话，你只需要写一个.pyx进行简单的封装，就能达到目的。</p>
 <h3 id="toc-7">封装</h3>
 <p><strong>如果只是一些C的函数需要封装进来</strong><br>
 使用<code>cdef extern</code>可以把C代码中的函数声明到cython中:</p>
@@ -374,7 +374,7 @@
 </td></tr></table></div>
 <p>当然你得有一个.c的文件来实现add函数</p>
 <p><strong>若是有一些C++的类需要封装进来</strong><br>
-举个官方的例子,你有一个rectangle.h的头文件,</p>
+举个官方的例子，你有一个rectangle.h的头文件，</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -458,15 +458,15 @@
         <span class="k">del</span> <span class="n">rec</span>     <span class="c"># delete heap allocated object</span>
 </pre></div>
 </td></tr></table></div>
-<p><code>func()</code>就是对外提供的接口.当然如果要对外提供整个类的话,可以用<code>cdef class</code>把整个类都封装一遍.</p>
+<p><code>func()</code>就是对外提供的接口。当然如果要对外提供整个类的话，可以用<code>cdef class</code>把整个类都封装一遍。</p>
 <div class="alert alert-danger">
 
     <i class="fa fa-bug"></i>
 
-    pyx文件不要和你的cpp文件重名,不然自动产生的Python-C-API包裹代码会覆盖掉你的源码
+    pyx文件不要和你的cpp文件重名，不然自动产生的Python-C-API包裹代码会覆盖掉你的源码。
 </div><h3 id="toc-8">参数传递</h3>
-<p>传递一个值是非常简单的,只要注意类型匹配就可以了,你可以参考<a href="http://docs.scipy.org/doc/numpy/user/basics.types.html">numpy的数据类型</a>来显示的转换它们.<br>
-问题是传一个数组的时候,需要传入一个地址,尤其对于多维数组来说,只能把它们当做一维数组在C中处理</p>
+<p>传递一个值是非常简单的，只要注意类型匹配就可以了，你可以参考<a href="http://docs.scipy.org/doc/numpy/user/basics.types.html">numpy的数据类型</a>来显示的转换它们。<br>
+问题是传一个数组的时候，需要传入一个地址，尤其对于多维数组来说，只能把它们当做一维数组在C中处理</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -478,8 +478,8 @@
     <span class="k">return</span> <span class="n">array</span>
 </pre></div>
 </td></tr></table></div>
-<p>这就传入了一个2d数组的开始地址.这种方式还可以拿来返回输出.因为是传入一个地址.<br>
-另外,如果有需要传入一个引用的话,比如C++的某些情况,不能直接使用<code>* ptr</code> 这样做</p>
+<p>这就传入了一个2d数组的开始地址。这种方式还可以拿来返回输出。因为是传入一个地址。<br>
+另外，如果有需要传入一个引用的话，比如C++的某些情况，不能直接使用<code>* ptr</code> 这样做</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -492,7 +492,7 @@
 </pre></div>
 </td></tr></table></div>
 <h2 id="toc-9">编写setup.py</h2>
-<p>在你搞定了上述的重写或者封装之后,你就需要写一个setup.py来进行编译了,好把你的C/C++模块编进共享库文件中.关于setup.py的一般写法,可以看<a href="https://docs.python.org/2/distutils/setupscript.html">这里</a>,不过在Cython中,还是有些区别的.
+<p>在你搞定了上述的重写或者封装之后，你就需要写一个setup.py来进行编译了，好把你的C/C++模块编进共享库文件中。关于setup.py的一般写法，可以看<a href="https://docs.python.org/2/distutils/setupscript.html">这里</a>，不过在Cython中，还是有些区别的。
 如果你只有一个pyx文件.那么下面这么写就足够了</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -549,7 +549,7 @@
 <span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
-<p>上面的写法中我们只需要注意Extension的写法,你可以同时编译多个C/C++扩展.</p>
+<p>上面的写法中我们只需要注意Extension的写法，你可以同时编译多个C/C++扩展。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -577,15 +577,15 @@
 
     <i class="fa fa-bug"></i>
 
-    Extension的name务必要和.pyx的文件名要保持一致.
-</div><p>最后,你只需要执行setup.py:</p>
+    Extension的name务必要和.pyx的文件名要保持一致。
+</div><p>最后，你只需要执行setup.py:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>python setup.py build_ext --inplace
 </pre></div>
 </td></tr></table></div>
 <h2 id="toc-10">其他</h2>
-<p>写于2015年8月7日by septicmk.<br>
-   内容应该足够支持入门了.若版本升级,API变动.或者想有更深入的了解.还得多看看<a href="http://docs.cython.org/index.html">官方文档</a>.<br>
-   若文中有误,欢迎指正 :)</p>
+<p>写于2015年8月7日by septicmk。<br>
+   内容应该足够支持入门了。若版本升级，API变动。或者想有更深入的了解。还得多看看<a href="http://docs.cython.org/index.html">官方文档</a>。<br>
+   若文中有误，欢迎指正 :)</p>
 
                 <div id="disqus_thread"></div>
                 <script type="text/javascript">
@@ -624,6 +624,14 @@
     (function($){
     $('.fancybox').fancybox();
     })(jQuery);
+    </script>
+    <script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+    }); 
+    </script>
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
 </body>
 </html>

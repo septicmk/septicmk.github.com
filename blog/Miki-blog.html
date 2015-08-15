@@ -37,10 +37,10 @@
                 </div>
                 <div class="col-xs-12 col-sm-9 col-md-9 note">
                     <hr>
-<p>如果你是一个python爱好者.</p>
-<p>如果你使用CSDN而又不满意页面样式,使用wordpress又觉得插件太复杂,同时又对jekyll的ruby和hexo的node.js没什么兴趣,那么去试试<a href="http://docs.getpelican.com/">Pelican</a>.不过本篇不是要介绍这些博客系统,如果你在使用别人写的博客系统的同时,对代码高亮,评论框,文章的模板,插件的定制,页面的style感到达不到心中所想的那样(只是突然想造个轮子),那么你也许可以尝试自己来写一个博客系统.</p>
+<p>如果你是一个python爱好者。</p>
+<p>如果你使用CSDN而又不满意页面样式，使用wordpress又觉得插件太复杂，同时又对jekyll的ruby和hexo的node.js没什么兴趣，那么去试试<a href="http://docs.getpelican.com/">Pelican</a>。不过本篇不是要介绍这些博客系统，如果你在使用别人写的博客系统的同时，对代码高亮，评论框，文章的模板，插件的定制，页面的style感到达不到心中所想的那样(只是突然想造个轮子)，那么你也许可以尝试自己来写一个博客系统。</p>
 <h2 id="toc-0">博客系统的基本需求</h2>
-<p>按照现在的潮流,一个静态博客系统就足够了,然后得支持markdown,再然后产生页面的速度要快,代码要能高亮,等等.总结一下大概是:</p>
+<p>按照现在的潮流，一个静态博客系统就足够了，然后得支持markdown，再然后产生页面的速度要快，代码要能高亮，等等。总结一下大概是:</p>
 <ul>
 <li>支持markdown</li>
 <li>静态编译产生博客</li>
@@ -49,8 +49,8 @@
 <li>SEO要好  </li>
 <li>使用python编写  </li>
 </ul>
-<p>整个需求中最关键的部分大概就是如何将markdown转换成html,只要这一步达成了,其他的几个都好说.这个功能,我推荐github上的<a href="https://github.com/lepture/mistune">Mistune</a>,这是一个纯python编写的一个据说是目前python实现的md2html中最快的一个解析器.<br>
-另一方面,代码高亮当然是使用pygments,页面模板当然交给jinja2,酷炫的网页显示当然少不了jquery和bootstrap.在稍微思考了一下后,这个系统的样子大致应当是下面这样的:</p>
+<p>整个需求中最关键的部分大概就是如何将markdown转换成html，只要这一步达成了，其他的几个都好说。这个功能，我推荐github上的<a href="https://github.com/lepture/mistune">Mistune</a>，这是一个纯python编写的一个据说是目前python实现的md2html中最快的一个解析器。<br>
+另一方面，代码高亮当然是使用pygments，页面模板当然交给jinja2，酷炫的网页显示当然少不了jquery和bootstrap。在稍微思考了一下后，这个系统的样子大致应当是下面这样的:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -72,11 +72,11 @@
 <span class="p">|</span>  <span class="p">|</span>-Makefile
 </pre></div>
 </td></tr></table></div>
-<p>在source目录下放的是js和css,template放的是页面的模板,也就是每次解析md文件后产生的不完全的html将填到这个模板中去,再然后post就是写的markdown文件存放的地方,而html就是最后解析出来的页面所存放的地方,main.py是我们的主要脚本,而Makefile只是为了方便管理工程.使用<code>make</code>来产生html,使用<code>make clean</code>来清除上一次产生的结果.最后,你只需要在html目录下创建一个git仓库将它定时的push到github上,就能完成blog的展示了.</p>
+<p>在source目录下放的是js和css，template放的是页面的模板，也就是每次解析md文件后产生的不完全的html将填到这个模板中去，再然后post就是写的markdown文件存放的地方，而html就是最后解析出来的页面所存放的地方，main.py是我们的主要脚本，而Makefile只是为了方便管理工程。使用<code>make</code>来产生html，使用<code>make clean</code>来清除上一次产生的结果。最后，你只需要在html目录下创建一个git仓库将它定时的push到github上，就能完成blog的展示了。</p>
 <h2 id="toc-1">将markdown解析为html</h2>
-<p>首先,最基本的,将md文件解析为html,并设置代码高亮.</p>
+<p>首先，最基本的，将md文件解析为html，并设置代码高亮。</p>
 <h3 id="toc-2">Mistune</h3>
-<p>这个活得交给Mistune来做,对于Mistune来说,用html渲染一个页面是一件很麻烦的事情,你得设置用何种方式渲染,甚至得重载很多函数,不过正是这样,可供我们定制的地方就越多.<br>
+<p>这个活得交给Mistune来做，对于Mistune来说，用html渲染一个页面是一件很麻烦的事情，你得设置用何种方式渲染，甚至得重载很多函数，不过正是这样，可供我们定制的地方就越多。<br>
 Mistune的基本用法是:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -87,9 +87,9 @@ Mistune的基本用法是:</p>
 <span class="c"># output: &lt;p&gt;I am using &lt;strong&gt;mistune markdown parser&lt;/strong&gt;&lt;/p&gt;</span>
 </pre></div>
 </td></tr></table></div>
-<p>不过单单这样还不够称之为一个好页面.首先是得解决代码高亮的问题</p>
+<p>不过单单这样还不够称之为一个好页面。首先是得解决代码高亮的问题</p>
 <h3 id="toc-3">pygments</h3>
-<p><a href="http://pygments.org/">pygments</a>总之就是一个非常厉害的专门做代码高亮的一个模块.它和Mistune配合使用就能解析markdown中带有反撇号们围起来的代码块了.</p>
+<p><a href="http://pygments.org/">pygments</a>总之就是一个非常厉害的专门做代码高亮的一个模块。它和Mistune配合使用就能解析markdown中带有反撇号们围起来的代码块了。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -167,14 +167,14 @@ Mistune的基本用法是:</p>
 <span class="n">mdp</span> <span class="o">=</span> <span class="n">mistune</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">escape</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">renderer</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
-<p>这样产生的html就是使用pygments加了特技的html了.<br>
-不过这还没完,现在的页面还不是代码高亮的.我们还得使用pygments来产生对应的css</p>
+<p>这样产生的html就是使用pygments加了特技的html了。<br>
+不过这还没完，现在的页面还不是代码高亮的。我们还得使用pygments来产生对应的css</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>pygmentize -f html -a .highlight -S monokai &gt; pygments.css
 </pre></div>
 </td></tr></table></div>
-<p>其中的<code>.highlight</code>对应之前的祖先选择器,而monokai是我喜欢的一个配色方案.</p>
+<p>其中的<code>.highlight</code>对应之前的祖先选择器，而monokai是我喜欢的一个配色方案。</p>
 <h3 id="toc-4">jinja2</h3>
-<p>虽然Mistune帮我们生产了HTML但产生的页面还缺点东西.比如<code>head</code>还有<code>body</code>的标签对.我们采用<a href="http://jinja.pocoo.org/docs/dev/">jinja2</a>来布置我们的html模板</p>
+<p>虽然Mistune帮我们生产了HTML但产生的页面还缺点东西。比如<code>head</code>还有<code>body</code>的标签对。我们采用<a href="http://jinja.pocoo.org/docs/dev/">jinja2</a>来布置我们的html模板</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -254,7 +254,7 @@ Mistune的基本用法是:</p>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 </td></tr></table></div>
-<p>当然,我们的css要重头写起是很难受的,于是我就从hexo的某个主题中偷了一个<a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.在此感谢Mistune和Wixo的作者.(github开源大法好)<br>
+<p>当然，我们的css要重头写起是很难受的，于是我就从hexo的某个主题中偷了一个<a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>。在此感谢Mistune和Wixo的作者。(github开源大法好)<br>
 在使用jinja2之后你就可以写一个这样的函数来解析你的markdown了</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -366,7 +366,7 @@ categories: blog
 <p>这写工具类的函数在Mistune的一个补充版中有可见<a href="https://github.com/lepture/mistune-contrib">mistune-contrib</a></p>
 <h2 id="toc-5">定制页面</h2>
 <h3 id="toc-6">评论框</h3>
-<p>当然是disqus了,翻墙就翻墙吧,如果你不想被多说的垃圾广告评论怼的话.</p>
+<p>当然是disqus了，翻墙就翻墙吧，如果你不想被多说的垃圾广告评论怼的话。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -394,9 +394,9 @@ categories: blog
   <span class="nt">&lt;noscript&gt;</span>Please enable JavaScript to view the <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://disqus.com/?ref_noscript&quot;</span> <span class="na">rel=</span><span class="s">&quot;nofollow&quot;</span><span class="nt">&gt;</span>comments powered by Disqus.<span class="nt">&lt;/a&gt;&lt;/noscript&gt;</span>
 </pre></div>
 </td></tr></table></div>
-<p>把这段代码插到模板中你想显示评论区的地方就可以了.当然前提是你得有disqus的账号.</p>
+<p>把这段代码插到模板中你想显示评论区的地方就可以了。当然前提是你得有disqus的账号。</p>
 <h3 id="toc-7">用jinja2来写一些宏</h3>
-<p>这就是自己写博客系统的一大好处了,你可以随意的修改页面生产的方式.随意的向页面中添加div标签.</p>
+<p>这就是自己写博客系统的一大好处了，你可以随意的修改页面生产的方式。随意的向页面中添加div标签。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -450,16 +450,16 @@ categories: blog
 { endmacro }
 </pre></div>
 </td></tr></table></div>
-<p>这些宏的效果我就不一一展示了.大概看看代码就知道是啥效果了哈.</p>
+<p>这些宏的效果我就不一一展示了。大概看看代码就知道是啥效果了哈。</p>
 <div class="alert alert-danger">
 
     <i class="fa fa-bug"></i>
 
-    注意: 上面的代码为了避免被jiaja2识别都做了处理,有毒,请勿直接食用
-</div><p>上面这个框就是其中一个效果</p>
+    注意: 上面的代码为了避免被jiaja2识别都做了处理，有毒，请勿直接食用
+</div><p>上面这个框就是其中一个效果。</p>
 <h2 id="toc-8">SEO</h2>
 <h3 id="toc-9">meta标签</h3>
-<p>首先页面的title是一定要写的,除了title之外.你还得写一些meta标签来讨好搜索引擎.</p>
+<p>首先页面的title是一定要写的，除了title之外。你还得写一些meta标签来讨好搜索引擎。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;septicmk&quot;</span><span class="nt">&gt;</span>
@@ -467,13 +467,13 @@ categories: blog
 <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;Keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;python,jinja2,pygments,SEO&quot;</span><span class="nt">&gt;</span>
 </pre></div>
 </td></tr></table></div>
-<p>根据google的一些设定,你必须有一个herlang的标签</p>
+<p>根据google的一些设定，你必须有一个herlang的标签</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;alternate&quot;</span> <span class="na">hreflang=</span><span class="s">&quot;zh-Hans&quot;</span> <span class="na">href=</span><span class="s">&quot;blog.septicmk.com/&quot;</span><span class="nt">&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <h3 id="toc-10">sitemap</h3>
-<p>当然,要得到好的SEO效果的话,得自己主动去讨好baidu和google的搜索引擎,所以得老老实实到这两个平台的站长工具中验证自己的网站.其中有一条要求提交网站的sitemap.
-你可以写一个这样的函数</p>
+<p>当然，要得到好的SEO效果的话，得自己主动去讨好baidu和google的搜索引擎，所以得老老实实到这两个平台的站长工具中验证自己的网站.其中有一条要求提交网站的sitemap。
+你可以写一个这样的函数:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -526,13 +526,13 @@ categories: blog
 <p>记得更新一下自己的sitemap就OK了</p>
 <h2 id="toc-11">发布</h2>
 <h3 id="toc-12">github-page</h3>
-<p>首先是<a href="https://pages.github.com/">官方文档</a>.
-很简单的.无非是新建一个username.github.com的库,然后把生成的html页面push到这个repo就可以了</p>
+<p>首先是<a href="https://pages.github.com/">官方文档</a>。
+很简单的。无非是新建一个username.github.com的库，然后把生成的html页面push到这个repo就可以了。</p>
 <h3 id="toc-13">独立域名</h3>
 <p>自己去godaddy上买一个
-然后写一个名为<code>CNAME</code>的文件把域名填上去就OK了.</p>
+然后写一个名为<code>CNAME</code>的文件把域名填上去就OK了。</p>
 <h3 id="toc-14">定时发布</h3>
-<p>如果觉得自己手动push太烦,可以写一个自动deploy的脚本</p>
+<p>如果觉得自己手动push太烦，可以写一个自动deploy的脚本。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -554,18 +554,18 @@ git commit -m <span class="sb">`</span>date +%Y%m%d<span class="sb">`</span>
 git push blog master
 </pre></div>
 </td></tr></table></div>
-<p>使用crontab来定时任务</p>
+<p>使用crontab来定时任务。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre>crontab -e
 <span class="m">30</span> <span class="m">21</span> * * * ~/auto/auto_deploy.sh
 </pre></div>
 </td></tr></table></div>
-<p>定个每天晚上9点半自动push.</p>
+<p>定个每天晚上9点半自动push。</p>
 <h2 id="toc-15">其他</h2>
-<p>写于2015年8月11日by septicmk.<br>
-如果你想直接使用成品的话,可以看看我在github的Miki这个库.</p>
+<p>写于2015年8月11日by septicmk。<br>
+如果你想直接使用成品的话，可以看看我在github的Miki这个库。</p>
 <p><a class="btn btn-info" href="https://github.com/septicmk/Miki" target="_blank" rel="external">源码下载</a></p>
-<p>若文中有误,欢迎指正<br>
+<p>若文中有误，欢迎指正。<br>
    ╯　　　 　╰<br>
   ●　　　 　 ●<br>
   " 　 　^　　"</p>
@@ -607,6 +607,14 @@ git push blog master
     (function($){
     $('.fancybox').fancybox();
     })(jQuery);
+    </script>
+    <script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+    }); 
+    </script>
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
 </body>
 </html>
