@@ -516,12 +516,12 @@ System Buffer的特点是:</p>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
-<h3 id="toc-9">Synchronization</h3>
+<h3 id="toc-9">集体同步</h3>
 <p>强制所有processor都运行到函数调用时才继续执行之后的语句。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Barrier</span> <span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 </pre></div>
 </td></tr></table></div>
-<h3 id="toc-10">Data Movement</h3>
+<h3 id="toc-10">数据传输</h3>
 <p>brodcast，scatter，gather，reduction的区别见下：
 <img src="http://7xl4a3.com1.z0.glb.clouddn.com/data_movement.gif" alt="Data Movement" title="Data Movement"></p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -534,7 +534,7 @@ System Buffer的特点是:</p>
 </pre></div>
 </td></tr></table></div>
 <p>还有<code>MPI_Allgather</code>相当于每个processor都做一次gather。</p>
-<h3 id="toc-11">Reductions</h3>
+<h3 id="toc-11">规约</h3>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Reduce</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
