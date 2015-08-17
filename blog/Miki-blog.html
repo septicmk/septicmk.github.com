@@ -363,7 +363,7 @@ categories: blog
     <span class="k">return</span> <span class="n">rv</span><span class="p">,</span> <span class="n">text</span>
 </pre></div>
 </td></tr></table></div>
-<p>这写工具类的函数在Mistune的一个补充版中有可见<a href="https://github.com/lepture/mistune-contrib">mistune-contrib</a></p>
+<p>这些工具类的函数在Mistune的一个补充版中有可见<a href="https://github.com/lepture/mistune-contrib">mistune-contrib</a></p>
 <h2 id="toc-5">定制页面</h2>
 <h3 id="toc-6">评论框</h3>
 <p>当然是disqus了，翻墙就翻墙吧，如果你不想被多说的垃圾广告评论怼的话。</p>
@@ -457,8 +457,28 @@ categories: blog
 
     注意: 上面的代码为了避免被jiaja2识别都做了处理，有毒，请勿直接食用
 </div><p>上面这个框就是其中一个效果。</p>
-<h2 id="toc-8">SEO</h2>
-<h3 id="toc-9">meta标签</h3>
+<h3 id="toc-8">Latex数学公式</h3>
+<p>这个好办，直接用mathjax。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/x-mathjax-config&quot;</span><span class="nt">&gt;</span> 
+    <span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span> 
+        <span class="nx">tex2jax</span><span class="o">:</span> <span class="p">{</span><span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span><span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span><span class="s1">&#39;\\)&#39;</span><span class="p">]]}</span> 
+    <span class="p">});</span> 
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span>
+    <span class="na">src=</span><span class="s">&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+</td></tr></table></div>
+<p>把这段代码放到<code>&lt;/body&gt;</code>这个标签前面就能自由的使用Latex写数学公式啦。</p>
+<h2 id="toc-9">SEO</h2>
+<h3 id="toc-10">meta标签</h3>
 <p>首先页面的title是一定要写的，除了title之外。你还得写一些meta标签来讨好搜索引擎。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -471,7 +491,7 @@ categories: blog
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;alternate&quot;</span> <span class="na">hreflang=</span><span class="s">&quot;zh-Hans&quot;</span> <span class="na">href=</span><span class="s">&quot;blog.septicmk.com/&quot;</span><span class="nt">&gt;</span>
 </pre></div>
 </td></tr></table></div>
-<h3 id="toc-10">sitemap</h3>
+<h3 id="toc-11">sitemap</h3>
 <p>当然，要得到好的SEO效果的话，得自己主动去讨好baidu和google的搜索引擎，所以得老老实实到这两个平台的站长工具中验证自己的网站.其中有一条要求提交网站的sitemap。
 你可以写一个这样的函数:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -524,14 +544,14 @@ categories: blog
 </pre></div>
 </td></tr></table></div>
 <p>记得更新一下自己的sitemap就OK了</p>
-<h2 id="toc-11">发布</h2>
-<h3 id="toc-12">github-page</h3>
+<h2 id="toc-12">发布</h2>
+<h3 id="toc-13">github-page</h3>
 <p>首先是<a href="https://pages.github.com/">官方文档</a>。
 很简单的。无非是新建一个username.github.com的库，然后把生成的html页面push到这个repo就可以了。</p>
-<h3 id="toc-13">独立域名</h3>
+<h3 id="toc-14">独立域名</h3>
 <p>自己去godaddy上买一个
 然后写一个名为<code>CNAME</code>的文件把域名填上去就OK了。</p>
-<h3 id="toc-14">定时发布</h3>
+<h3 id="toc-15">定时发布</h3>
 <p>如果觉得自己手动push太烦，可以写一个自动deploy的脚本。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -561,7 +581,7 @@ git push blog master
 </pre></div>
 </td></tr></table></div>
 <p>定个每天晚上9点半自动push。</p>
-<h2 id="toc-15">其他</h2>
+<h2 id="toc-16">其他</h2>
 <p>写于2015年8月11日by septicmk。<br>
 如果你想直接使用成品的话，可以看看我在github的Miki这个库。</p>
 <p><a class="btn btn-info" href="https://github.com/septicmk/Miki" target="_blank" rel="external">源码下载</a></p>
