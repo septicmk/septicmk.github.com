@@ -1,0 +1,971 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+<head>
+<title>MPI教程 | Septicmk</title>
+<link rel="alternate" hreflang="zh-Hans" href="blog.septicmk.com/Concurrent-and-Parallel/MPI-tutorial.html">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name = "author" content="septicmk"> 
+  <meta name = "description" content="MPI教程"><meta name = "Keywords" content="MPI, 并行, 阻塞, parallel">
+  <link rel="stylesheet" href="/source/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/source/css/font-awesome.css" type="text/css">
+  <link rel="stylesheet" href="/source/css/style.css"  type="text/css">
+  <link rel="stylesheet" href="/source/css/highlight.css" type="text/css">
+  <link rel="stylesheet" href="/source/css/pygments.css" type="text/css">
+  <link rel="stylesheet" href="/source/css/google-fonts.css" type="text/css">
+  <link rel="stylesheet" href="/source/css/responsive.css" type="text/css">  
+  <link rel="stylesheet" href="/source/css/sidenav.css" type="text/css">  
+  <script src="/source/js/jquery-2.0.3.min.js"></script>
+</head>
+<body  id="body" data-spy="scroll" data-target=".toc">
+    <div class="container" id="container">
+        <div class=content>
+            <div class=page-header>
+                <h1>
+                    <a class="brand" href="/index.html" hreflang="zh">Septicmk</a>
+                    <span class="split"></span>
+                    <span class="title">MPI教程</span>
+                </h1>
+            </div>
+            <div class="row page">
+                <div class="col-xs-12 col-sm-3 col-md-3 toc">
+                    <!-- toc -->
+                    <script type="text/javascript">
+		                jQuery(document).ready(function() {
+ 		                        generateWikiTOC('.note', '.toc', 2, 2);
+		                });
+                    </script>
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-9 note">
+                    <hr>
+<div class="alert alert-info">
+
+    <i class="fa fa-info"></i>
+
+    本文使用MPICH3.1.4,不介绍理论,只介绍用法.
+</div><p>MPI全称: Message Passing Interface<br>
+MPI采用简单暴力的多进程来实现并行。即将同样的程序拷贝给所有的处理器去执行。 没有冗余容错机制，也没有MapRecude。 唯一提供的就是进程间的通信。由于其灵活性很大，所以可以写出能发挥出硬件最大性能的程序。</p>
+<h2 id="toc-0">Quick Start</h2>
+<h3 id="toc-1">MPICH</h3>
+<p>编译安装</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre>wget http://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz
+tar zxf mpich-3.1.4.tar.gz
+./configure --disable-fortran
+make -j4
+make install
+</pre></div>
+</td></tr></table></div>
+<p><a href="http://stackoverflow.com/questions/2427399/mpich-vs-openmpi">MPICH VS OpenMPI</a></p>
+<h3 id="toc-2">Hello World</h3>
+<p>下面这段程序中<code>MPI_init()</code>和<code>MPI_Finalize()</code>中夹着的就是要并行执行的部分。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//hello.c</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;mpi.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span> <span class="c1">//初始化MPI环境</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+    <span class="n">MPI_Finalize</span><span class="p">();</span> <span class="c1">//结束MPI环境</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>编译，然后执行它：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre>mpicc -o hello hello.c
+mpirun -np <span class="m">4</span> ./hello
+mpiexec -n <span class="m">4</span> ./hello
+</pre></div>
+</td></tr></table></div>
+<p>这之后会输出4个<code>Hello World</code>, 当然<code>mpirun</code>和<code>mpiexec</code>你只要运行一个就OK了，这两句是等价的，你也可以修改开启的进程数目，即-n后的参数。关于mpirun和mpiexec的区别，戳<a href="http://stackoverflow.com/questions/25287981/mpiexec-vs-mpirun">这里</a>。<br>
+mpirun是MPI各个实现的启动MPI的方式，而mpiexec是MPI标准启动方式，使用<code>mpiexec</code>要更好一些。</p>
+<h3 id="toc-3">基本的API</h3>
+<p>初始化。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Init</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span><span class="n">argv</span><span class="p">[]);</span> <span class="c1">//这句应该放在所有并行操作的最前面。</span>
+<span class="kt">int</span> <span class="nf">MPI_Initialized</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">flag</span><span class="p">);</span> <span class="c1">//是否初始化， 结果保存在flag中</span>
+</pre></div>
+</td></tr></table></div>
+<p>并行结束。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Finalize</span><span class="p">();</span>
+</pre></div>
+</td></tr></table></div>
+<p>rank和进程数目。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">size</span><span class="p">);</span> <span class="c1">//把comm通信下的processor的个数存入size中</span>
+<span class="kt">int</span> <span class="nf">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">rank</span><span class="p">);</span> <span class="c1">//当前进程的的标识存入rank中(0 ~ size-1)</span>
+</pre></div>
+</td></tr></table></div>
+<p>comm为<code>MPI_COMM_WORLD</code>时，表示当前程序所有能用的进程。<br>
+一般，上面这两句在大部分MPI程序中都是紧挨着<code>MPI_init()</code>的。<br>
+使用这两个函数，可以方便的实现master-slave的并行模式。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="n">DoMaster</span><span class="p">();</span>
+<span class="k">else</span> <span class="nf">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> <span class="n">DoSlave1</span><span class="p">();</span>
+<span class="k">else</span> <span class="nf">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="n">DoSlave2</span><span class="p">();</span>
+</pre></div>
+</td></tr></table></div>
+<p>把每个进程处理的函数写到对应的函数中将是一个明智的选择。</p>
+<p>时间测定。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Wtime</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">//程序此刻的时间戳</span>
+<span class="kt">int</span> <span class="nf">MPI_Wtick</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">//两个时钟脉冲间隔</span>
+</pre></div>
+</td></tr></table></div>
+<p>要测定一段程序的运行，把程序结束后和开始前的时间戳相减就能得到了。</p>
+<h2 id="toc-4">P2P通信规范</h2>
+<p>上述的<em>Hello World</em>程序并不是MPI主要用法。毕竟通信才是MPI的关注重点。点对点通信就是只涉及到两个processor之间的消息传输。也就是<code>send</code>和<code>recv</code>。首先，先看一段点对点通信的例子：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;mpi.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argv</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argc</span><span class="p">[]){</span>
+    <span class="kt">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">tot</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">msg</span><span class="p">[</span><span class="mi">128</span><span class="p">],</span> <span class="n">rev</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+    <span class="n">MPI_Status</span> <span class="n">state</span><span class="p">;</span>
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argc</span><span class="p">);</span>
+    <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+    <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tot</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tot</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">sprintf</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="s">&quot;hello, %d, this is zero, I&#39;am your master&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+            <span class="n">MPI_Send</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">tot</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">MPI_Recv</span><span class="p">(</span><span class="n">rev</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">state</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;P%d got: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">rev</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="n">MPI_Recv</span><span class="p">(</span><span class="n">rev</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">state</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;P%d got: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">rev</span><span class="p">);</span>
+        <span class="n">sprintf</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s">&quot;hello, zero, this is %d, I&#39;am your slave&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">);</span>
+        <span class="n">MPI_Send</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">MPI_Finalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>这一段中使用<code>MPI_Send()</code>和<code>MPI_Recv</code>来实现master和slave之间的hello。使用的通信是较为简单的阻塞式通信。而通信方式分为<strong>阻塞通信(Blocking)</strong>和<strong>非阻塞通信(Non-blocking)</strong>。<br>
+关于阻塞和非阻塞，区别无非就是<strong>调用后需不需要挂起等待</strong>。当然，更细致的区别正是这一段要重点讨论的。</p>
+<h3 id="toc-5">阻塞通信</h3>
+<p>在阻塞通信中，有四种模式：</p>
+<ul>
+<li><p><strong>标准通信模式(The Standard mode)</strong>
+ 标准通信模式下。使不使用<strong>缓存</strong>。是由MPI本身决定的。缓冲区不是MPI的标准，但允许是MPI某个实现的一部分。<br>
+ 如果有缓存，每个processor都有独立的一个的system buffer。它们是下图所示：
+<img src="http://7xl4a3.com1.z0.glb.clouddn.com/buffer_recv.gif" alt="system buffer" title="System Buffer"><br>
+ 讨论缓冲区时要区别System Buffer和Application Buffer
+System Buffer的特点是:</p>
+<pre class="plain"><code>对程序员透明，由MPI底层控制;
+资源有限，很容易耗尽;
+可以提高程序的性能，因为此时send/recv操作实际上是异步的;</code></pre>
+<p>Application Buffer则是：</p>
+<pre class="plain"><code>供用户使用的内存。比如你定义变量使用的内存。</code></pre>
+<p>对带有System Buffer的情况来说，阻塞发送实际上指的是成功将要发送的内容，拷贝到接收端的System Buffer中的这一过程。阻塞接收实际上是指向System Buffer发送请求到Application Buffer获得数据的过程。</p>
+<p>涉及到的API：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Send</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">MPI_Recv</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">source</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span><span class="p">);</span>
+<span class="n">MPI_Status</span> <span class="n">status</span><span class="p">;</span>
+</pre></div>
+</td></tr></table></div>
+<p>其中(buff, count, type)三元组在所有涉及通信的过程中都有，而且都是最开始的三个参数。表示信息在内存中的指针，发送的数目，以及数据的类型。<br>
+ dest和source则表示信息的目的地和来源。而tag表示消息的一个标识。也有<code>MPI_ANY_SOURCE</code>和<code>MPI_ANY_TAG</code>这两个值，表示接收所有source，所有tag的信息。comm这个参数同上不解释，status这个参数存储这接收到的信息的状态。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">status</span><span class="p">.</span><span class="n">MPI_SOURCE</span>  <span class="c1">//信息来源</span>
+<span class="n">status</span><span class="p">.</span><span class="n">MPI_TAG</span>     <span class="c1">//信息的Tag</span>
+<span class="n">MPI_Get_count</span><span class="p">(</span><span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span><span class="p">,</span> <span class="n">MPI_datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">count</span><span class="p">)</span>  <span class="c1">//多少个该类型的数据。</span>
+</pre></div>
+</td></tr></table></div>
+<p>对于数据类型，基本的类型有：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_CHAR</span><span class="p">,</span><span class="n">MPI_DOUBLE</span><span class="p">,</span><span class="n">MPI_FLOAT</span><span class="p">,</span><span class="n">MPI_INT</span><span class="p">,</span><span class="n">MPI_LONG</span><span class="p">,</span><span class="n">MPI_LONG_DOUBLE</span><span class="p">,</span><span class="n">MPI_SHORT</span><span class="p">,</span><span class="n">MPI_UNSIGNED_CHAR</span><span class="p">,</span><span class="n">MPI_UNSIGNED</span><span class="p">,</span><span class="n">MPI_UNSIGNED_LONG</span><span class="p">,</span><span class="n">MPI_UNSIGNED_SHORT</span>
+</pre></div>
+</td></tr></table></div>
+<p>基本上看名字就知道在C中对应的类型。
+ 再举个标准阻塞通信的例子：</p>
+</li>
+</ul>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &quot;mpi.h&quot;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">rc</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> 
+    <span class="kt">char</span> <span class="n">inmsg</span><span class="p">,</span> <span class="n">outmsg</span><span class="o">=</span><span class="sc">&#39;x&#39;</span><span class="p">;</span>
+    <span class="n">MPI_Status</span> <span class="n">Stat</span><span class="p">;</span>
+
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+    <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">numtasks</span><span class="p">);</span>
+    <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="n">dest</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">MPI_Send</span><span class="p">(</span><span class="o">&amp;</span><span class="n">outmsg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">MPI_Recv</span><span class="p">(</span><span class="o">&amp;</span><span class="n">inmsg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Stat</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+        <span class="n">dest</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">MPI_Recv</span><span class="p">(</span><span class="o">&amp;</span><span class="n">inmsg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Stat</span><span class="p">);</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">MPI_Send</span><span class="p">(</span><span class="o">&amp;</span><span class="n">outmsg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">MPI_Get_count</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Stat</span><span class="p">,</span> <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">count</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Task %d: Received %d char(s) from task %d with tag %d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+           <span class="n">rank</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">Stat</span><span class="p">.</span><span class="n">MPI_SOURCE</span><span class="p">,</span> <span class="n">Stat</span><span class="p">.</span><span class="n">MPI_TAG</span><span class="p">);</span>
+    <span class="n">MPI_Finalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<ul>
+<li><p><strong>同步通信模式(The Synchronous mode)</strong>
+ 理解上述的标准模式，同步模式就好说了。所谓同步，指的是信息传输终止于<strong>接收方已经开始将数据拷贝到Application Buffer中去</strong>。只有一个API</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Ssend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+</pre></div>
+</td></tr></table></div>
+<p>参数列表和<code>MPI_Send</code>一样。</p>
+</li>
+<li><p><strong>准备好通信模式(The Ready mode)</strong>
+ 仅仅在程序员100%确定发送时接收方已经准备好时使用。不过在MPI的各种实现中基本上和标准的<code>MPI_Send</code>一样。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Rsend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p><strong>缓存通信模式(The Buffered mode)</strong>
+ 人工开辟一片System Buffer给程序员使用，使用方式就如同标准通信模式带缓存的情况。一般用来弥补System Buffer不足的缺点。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Bsend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comma</span><span class="p">);</span>
+<span class="n">MPI_Buffer_attach</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+<span class="n">MPI_Buffer_detach</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+</pre></div>
+</td></tr></table></div>
+<p><code>MPI_Buffer_attach</code>用来开辟一片缓存。size指的是字节数(bytes)。和<code>MPI_Buffer_detach</code>配套使用。</p>
+</li>
+</ul>
+<p>以上这四中模式中，准备好模式是最快的，然而很少使用。应为这种情况最少。标准模式和缓存模式也足够快，但增加了内存开销。一般来说用来应付较小的通信。同步模式最慢，但也最可靠。一般用来应付数据量大的通信。</p>
+<h3 id="toc-6">非阻塞通信</h3>
+<p>非阻塞通信一般用来重叠通信和计算。为了最大限度压榨硬件而使用。<br>
+先介绍常用的API：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Isend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">)</span>
+<span class="kt">int</span> <span class="n">MPI_Irecv</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="kt">int</span> <span class="n">source</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="n">MPI_Request</span> <span class="o">*</span><span class="n">request</span><span class="p">)</span>
+
+<span class="n">MPI_Wait</span><span class="p">(</span><span class="n">MPI_Request</span> <span class="o">*</span><span class="n">request</span><span class="p">,</span> <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span><span class="p">);</span>
+<span class="n">MPI_Waitall</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Request</span> <span class="o">*</span><span class="n">array_of_requests</span><span class="p">[],</span> <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">array_of_statuses</span><span class="p">[]);</span>
+
+<span class="n">MPI_Test</span><span class="p">(</span><span class="n">MPI_Request</span> <span class="o">*</span><span class="n">request</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">flag</span><span class="p">,</span> <span class="n">MPI_status</span> <span class="o">*</span><span class="n">status</span><span class="p">);</span>
+<span class="n">MPI_Testall</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Request</span> <span class="o">*</span><span class="n">array_of_requests</span><span class="p">[],</span> <span class="kt">int</span> <span class="o">*</span><span class="n">flag</span><span class="p">,</span> <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">array_of_statuses</span><span class="p">[]);</span>
+</pre></div>
+</td></tr></table></div>
+<p>虽然非阻塞通信有诸如<code>MPI_Issend</code>，<code>MPI_Ibsend</code>，<code>MPI_Irsend</code>不过基本和前面大同小异。所谓非阻塞模式指的是在发送和接收的函数调用后立即返回，不管到底有没有发送和接收到，而操作的正确性由Wait和Test类函数来保证。也就是说，在一个非阻塞操作执行之后，在使用得到的数据之前要先wait或Test一下来保证这个数据是已经可用的。举个例子：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;unistd.h&gt;</span>
+<span class="cp">#include &quot;mpi.h&quot;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">buf</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tag1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tag2</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+    <span class="n">MPI_Request</span> <span class="n">reqs</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+    <span class="n">MPI_Status</span> <span class="n">stats</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+    <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+    <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">numtasks</span><span class="p">);</span>
+    <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">next</span> <span class="o">=</span> <span class="n">rank</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="n">prev</span> <span class="o">=</span> <span class="n">numtasks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="p">(</span><span class="n">numtasks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>  <span class="n">next</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">MPI_Irecv</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INT</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">tag1</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">reqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">MPI_Irecv</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INT</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="n">tag2</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">reqs</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;buffer before wait%d %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+    <span class="n">MPI_Isend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rank</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INT</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">tag2</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">reqs</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+    <span class="n">MPI_Isend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rank</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INT</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="n">tag1</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">reqs</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+
+    <span class="n">MPI_Waitall</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">reqs</span><span class="p">,</span> <span class="n">stats</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;task %d got %d from prev</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">rank</span><span class="p">,</span> <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;task %d got %d from next</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">rank</span><span class="p">,</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+    <span class="n">MPI_Finalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>这里程序在执行<code>MPI_Irev</code>之后立即就返回了，程序继续执行，然而此时访问存储的数据发现并没有接收到。要到wait之后才确定。读者可以跑一下这个例子体会一下。</p>
+<h3 id="toc-7">总结</h3>
+<p>集中对比一下阻塞式和非阻塞式通信的特点。<br>
+<strong>Blocking:</strong></p>
+<blockquote><ol>
+<li>A blocking send routine will only "return" after it is safe to modify the application buffer (your send data) for reuse. Safe means that modifications will not affect the data intended for the receive task. Safe does not imply that the data was actually received - it may very well be sitting in a system buffer.</li>
+<li>A blocking send can be synchronous which means there is handshaking occurring with the receive task to confirm a safe send.</li>
+<li>A blocking send can be asynchronous if a system buffer is used to hold the data for eventual delivery to the receive.</li>
+<li>A blocking receive only "returns" after the data has arrived and is ready for use by the program.</li>
+</ol>
+</blockquote>
+<p><strong>Non-blocking:</strong></p>
+<blockquote><ol>
+<li>Non-blocking send and receive routines behave similarly - they will return almost immediately. They do not wait for any communication events to complete, such as message copying from user memory to system buffer space or the actual arrival of message.</li>
+<li>Non-blocking operations simply "request" the MPI library to perform the operation when it is able. The user can not predict when that will happen.</li>
+<li>It is unsafe to modify the application buffer (your variable space) until you know for a fact the requested non-blocking operation was actually performed by the library. There are "wait" routines used to do this.</li>
+<li>Non-blocking communications are primarily used to overlap computation with communication and exploit possible performance gains.
+上述内容摘抄自<a href="https://computing.llnl.gov/tutorials/mpi/#Point_to_Point_Routines">这里</a>，我认为非常精辟。  </li>
+</ol>
+</blockquote>
+<p><strong>顺序规则(Order Rules)</strong>：</p>
+<pre class="plian"><code>发送方连着发送两个消息给同一个接收方。先发的必被先收。
+接收放连着请求两次同一个消息。先请求必先满足。
+两个发送方给一个接收方发同样的消息,同时接收方只收一个，只有一个会被满足。(Starvation)</code></pre>
+<p>前提没有使用多线程。</p>
+<h2 id="toc-8">集合通信规范</h2>
+<p>集合通信指的是包含在同一个communicator下的全部processor的通信。分3个类型：</p>
+<ul>
+<li>Synchronization：强制所有processor都到达同步点。</li>
+<li>Data Movement：数据交换，有broadcast，scaater，gather等。</li>
+<li>Reductions：规约，将所有processor中的数据进行统计值计算。</li>
+</ul>
+<p>一个集合通信的例子：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &quot;mpi.h&quot;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#define SIZE 4</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">recvcount</span><span class="p">,</span> <span class="n">source</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">sendbuf</span><span class="p">[</span><span class="n">SIZE</span><span class="p">][</span><span class="n">SIZE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="p">{</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">},</span>
+      <span class="p">{</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">},</span>
+      <span class="p">{</span><span class="mf">9.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">11.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">},</span>
+      <span class="p">{</span><span class="mf">13.0</span><span class="p">,</span> <span class="mf">14.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">}</span>  <span class="p">};</span>
+    <span class="kt">float</span> <span class="n">recvbuf</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span>
+
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+    <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+    <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">numtasks</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">numtasks</span> <span class="o">==</span> <span class="n">SIZE</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">source</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="n">sendcount</span> <span class="o">=</span> <span class="n">SIZE</span><span class="p">;</span>
+      <span class="n">recvcount</span> <span class="o">=</span> <span class="n">SIZE</span><span class="p">;</span>
+      <span class="n">MPI_Scatter</span><span class="p">(</span><span class="n">sendbuf</span><span class="p">,</span><span class="n">sendcount</span><span class="p">,</span><span class="n">MPI_FLOAT</span><span class="p">,</span><span class="n">recvbuf</span><span class="p">,</span><span class="n">recvcount</span><span class="p">,</span>
+                 <span class="n">MPI_FLOAT</span><span class="p">,</span><span class="n">source</span><span class="p">,</span><span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;rank= %d  Results: %f %f %f %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">rank</span><span class="p">,</span><span class="n">recvbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+             <span class="n">recvbuf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">recvbuf</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">recvbuf</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+      <span class="p">}</span>
+    <span class="k">else</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Must specify %d processors. Terminating.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">SIZE</span><span class="p">);</span>
+
+    <span class="n">MPI_Finalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<h3 id="toc-9">集体同步</h3>
+<p>强制所有processor都运行到函数调用时才继续执行之后的语句。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Barrier</span> <span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+</pre></div>
+</td></tr></table></div>
+<h3 id="toc-10">数据传输</h3>
+<p>brodcast，scatter，gather，reduction的区别见下：
+<img src="http://7xl4a3.com1.z0.glb.clouddn.com/data_movement.gif" alt="Data Movement" title="Data Movement"></p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Bcast</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">MPI_Scatter</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">recvcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">MPI_Gather</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">recvcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">MPI_Alltoall</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">recvcnt</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+</pre></div>
+</td></tr></table></div>
+<p>还有<code>MPI_Allgather</code>相当于每个processor都做一次gather。</p>
+<h3 id="toc-11">规约</h3>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Reduce</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">MPI_Op_create</span><span class="p">(</span><span class="n">MPI_User_function</span> <span class="o">*</span><span class="n">function</span><span class="p">,</span> <span class="kt">int</span> <span class="n">commute</span><span class="p">,</span> <span class="n">MPI_Op</span> <span class="o">*</span><span class="n">op</span><span class="p">);</span>
+<span class="c1">//typedef void (MPI_User_function) ( void * a, void * b, int * len, MPI_Datatype * );</span>
+</pre></div>
+</td></tr></table></div>
+<p>上述这个op就是规约的函数，用过MapReduce的肯定不陌生。</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_MAX</span><span class="p">,</span><span class="n">MPI_MIN</span><span class="p">,</span><span class="n">MPI_SUM</span> <span class="p">...</span>
+</pre></div>
+</td></tr></table></div>
+<p>当然也可以自己定义函数<code>MPI_Op_create</code>，不过得对C的函数指针有些了解。</p>
+<h2 id="toc-12">组和通信器</h2>
+<p>即Groups和Communicators。<br>
+一个Group对应一个Communicators，Group的目的是使你可以给task分组。然后可以在组内进行更加Safe的通信。通过<code>MPI_Group_incl</code>来创建新组，<code>MPI_Comm_create</code>来创建新的通信器。<br>
+例子：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &quot;mpi.h&quot;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#define NPROCS 8</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">new_rank</span><span class="p">,</span> <span class="n">sendbuf</span><span class="p">,</span> <span class="n">recvbuf</span><span class="p">,</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">ranks1</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="n">ranks2</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">};</span>
+    <span class="n">MPI_Group</span>  <span class="n">orig_group</span><span class="p">,</span> <span class="n">new_group</span><span class="p">;</span>
+    <span class="n">MPI_Comm</span>   <span class="n">new_comm</span><span class="p">;</span>
+
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+    <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+    <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">numtasks</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">numtasks</span> <span class="o">!=</span> <span class="n">NPROCS</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Must specify MP_PROCS= %d. Terminating.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">NPROCS</span><span class="p">);</span>
+      <span class="n">MPI_Finalize</span><span class="p">();</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">sendbuf</span> <span class="o">=</span> <span class="n">rank</span><span class="p">;</span>
+
+    <span class="cm">/* Extract the original group handle */</span>
+    <span class="n">MPI_Comm_group</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">orig_group</span><span class="p">);</span>
+
+    <span class="cm">/* Divide tasks into two distinct groups based upon rank */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">&lt;</span> <span class="n">NPROCS</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">MPI_Group_incl</span><span class="p">(</span><span class="n">orig_group</span><span class="p">,</span> <span class="n">NPROCS</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ranks1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_group</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="n">MPI_Group_incl</span><span class="p">(</span><span class="n">orig_group</span><span class="p">,</span> <span class="n">NPROCS</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ranks2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_group</span><span class="p">);</span>
+      <span class="p">}</span>
+
+    <span class="cm">/* Create new new communicator and then perform collective communications */</span>
+    <span class="n">MPI_Comm_create</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">new_group</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_comm</span><span class="p">);</span>
+    <span class="n">MPI_Allreduce</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sendbuf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">recvbuf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INT</span><span class="p">,</span> <span class="n">MPI_SUM</span><span class="p">,</span> <span class="n">new_comm</span><span class="p">);</span>
+
+    <span class="n">MPI_Group_rank</span> <span class="p">(</span><span class="n">new_group</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_rank</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;rank= %d newrank= %d recvbuf= %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">rank</span><span class="p">,</span><span class="n">new_rank</span><span class="p">,</span><span class="n">recvbuf</span><span class="p">);</span>
+    <span class="n">MPI_Finalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<h2 id="toc-13">衍生类型</h2>
+<p>MPI提供API给程序员来创造新的MPI数据类型。一般有4种方法来创建派生类型。</p>
+<ul>
+<li>Contiguous</li>
+<li>Vector</li>
+<li>Indexed</li>
+<li>Struct
+即使你要创建的数据不是连续的。经过派生类型的转化后，对于MPI可以看做是连续的。实际上，MPI通过TypeMap来保存新的数据类型。<pre class="plain"><code>TypeMap = {(type0, disp0), (type1 , disp1), ... , (typen-1, dispn-1)}</code></pre>
+其中type表示这个块中的数据原始类型，disp表示其在内存中的偏移量。<br>
+主要的API如下：</li>
+</ul>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Type_contiguous</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">oldtype</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span> 
+<span class="c1">//count个连续的oldtype构成新的type</span>
+
+<span class="n">MPI_Type_vector</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">blocklength</span><span class="p">,</span><span class="n">stride</span><span class="p">,</span><span class="n">oldtype</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span>
+<span class="c1">//count个block，每个block有blocklength个oldtype，每两个相邻的block直接隔着stride个oldtype。</span>
+
+<span class="n">MPI_Type_indexed</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">blocklens</span><span class="p">[],</span><span class="n">offsets</span><span class="p">[],</span><span class="n">old_type</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span>
+<span class="c1">//count个block，每个block的len对应blocklens[]中的值，每个block开始的offset(oldtype)对应于offsets[]中的值。</span>
+<span class="c1">//这可以拿来构造三角矩阵。</span>
+
+
+<span class="n">MPI_Type_struct</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">blocklens</span><span class="p">[],</span><span class="n">offsets</span><span class="p">[],</span><span class="n">old_types</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span>
+<span class="c1">//count个block，每个block的len对应blocklens[]中的值，每个block开始的offset(bytes)对应于offsets[]中的值，每个块对应的oldtype来自oldtypes中的值</span>
+<span class="c1">//较为常用的一种方法。</span>
+
+<span class="n">MPI_Type_commit</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">datatype</span><span class="p">)</span>
+<span class="c1">//在使用前先commit</span>
+
+<span class="n">MPI_Type_extent</span> <span class="p">(</span><span class="n">datatype</span><span class="p">,</span><span class="o">&amp;</span><span class="n">extent</span><span class="p">)</span>
+<span class="c1">//返回datatype所占的字节数。</span>
+<span class="c1">//一个工具类函数</span>
+
+<span class="n">MPI_Type_free</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">datatype</span><span class="p">)</span>
+<span class="c1">//你猜?</span>
+</pre></div>
+</td></tr></table></div>
+<p>给一个构建struct的例子：</p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &quot;mpi.h&quot;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#define NELEM 25</span>
+
+<span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
+<span class="kt">int</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">velocity</span><span class="p">;</span>
+  <span class="kt">int</span>  <span class="n">n</span><span class="p">,</span> <span class="n">type</span><span class="p">;</span>
+  <span class="p">}</span>          <span class="n">Particle</span><span class="p">;</span>
+<span class="n">Particle</span>     <span class="n">p</span><span class="p">[</span><span class="n">NELEM</span><span class="p">],</span> <span class="n">particles</span><span class="p">[</span><span class="n">NELEM</span><span class="p">];</span>
+<span class="n">MPI_Datatype</span> <span class="n">particletype</span><span class="p">,</span> <span class="n">oldtypes</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> 
+<span class="kt">int</span>          <span class="n">blockcounts</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="cm">/* MPI_Aint type used to be consistent with syntax of */</span>
+<span class="cm">/* MPI_Type_extent routine */</span>
+<span class="n">MPI_Aint</span>    <span class="n">offsets</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">;</span>
+
+<span class="n">MPI_Status</span> <span class="n">stat</span><span class="p">;</span>
+
+<span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span><span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+<span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+<span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">numtasks</span><span class="p">);</span>
+
+<span class="cm">/* Setup description of the 4 MPI_FLOAT fields x, y, z, velocity */</span>
+<span class="n">offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">oldtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">MPI_FLOAT</span><span class="p">;</span>
+<span class="n">blockcounts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+<span class="cm">/* Setup description of the 2 MPI_INT fields n, type */</span>
+<span class="cm">/* Need to first figure offset by getting size of MPI_FLOAT */</span>
+<span class="n">MPI_Type_extent</span><span class="p">(</span><span class="n">MPI_FLOAT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">extent</span><span class="p">);</span>
+<span class="n">offsets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">extent</span><span class="p">;</span>
+<span class="n">oldtypes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">MPI_INT</span><span class="p">;</span>
+<span class="n">blockcounts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+<span class="cm">/* Now define structured type and commit it */</span>
+<span class="n">MPI_Type_struct</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">blockcounts</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">oldtypes</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">particletype</span><span class="p">);</span>
+<span class="n">MPI_Type_commit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">particletype</span><span class="p">);</span>
+
+<span class="cm">/* Initialize the particle array and then send it to each task */</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">NELEM</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">particles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">;</span>
+     <span class="n">particles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+     <span class="n">particles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">;</span> 
+     <span class="n">particles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">velocity</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">;</span>
+     <span class="n">particles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">n</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+     <span class="n">particles</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">type</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">;</span> 
+     <span class="p">}</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">numtasks</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> 
+     <span class="n">MPI_Send</span><span class="p">(</span><span class="n">particles</span><span class="p">,</span> <span class="n">NELEM</span><span class="p">,</span> <span class="n">particletype</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="n">MPI_Recv</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">NELEM</span><span class="p">,</span> <span class="n">particletype</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">stat</span><span class="p">);</span>
+
+<span class="cm">/* Print a sample of what was received */</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;rank= %d   %3.2f %3.2f %3.2f %3.2f %d %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">x</span><span class="p">,</span>
+     <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">y</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">z</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">velocity</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">n</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">type</span><span class="p">);</span>
+
+<span class="n">MPI_Type_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">particletype</span><span class="p">);</span>
+<span class="n">MPI_Finalize</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<h2 id="toc-14">其他</h2>
+<p>最后再给个例子。也是很多MPI教程常见的利用积分计算PI的值：</p>
+<p>$$\pi=\int_0^1{\frac{4}{1+x^2}dx}$$</p>
+<p><img src="http://7xl4a3.com1.z0.glb.clouddn.com/pi.png" alt="PI" title="PI"></p>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;math.h&gt;</span>
+<span class="cp">#include &quot;mpi.h&quot;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">double</span> <span class="nf">f</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+    <span class="kt">int</span> <span class="n">ProcRank</span><span class="p">,</span> <span class="n">ProcNum</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">PI25DT</span> <span class="o">=</span> <span class="mf">3.141592653589793238462643</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">mypi</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">sum</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">;</span>
+    <span class="n">MPI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+    <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ProcNum</span><span class="p">);</span>
+    <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ProcRank</span><span class="p">);</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">done</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ProcRank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Enter the number of intervals: &quot;</span><span class="p">);</span>
+            <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">n</span><span class="p">);</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">MPI_Wtime</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="n">MPI_Bcast</span><span class="p">(</span><span class="o">&amp;</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span> <span class="n">n</span> <span class="p">;</span>
+            <span class="n">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">ProcRank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="n">ProcNum</span><span class="p">){</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">i</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">);</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">mypi</span> <span class="o">=</span> <span class="n">h</span><span class="o">*</span><span class="n">sum</span><span class="p">;</span>
+            <span class="n">MPI_Reduce</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mypi</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="n">MPI_SUM</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">ProcRank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="n">t2</span> <span class="o">=</span> <span class="n">MPI_Wtime</span><span class="p">();</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;pi is approximately %.16f, Error is %.16f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">fabs</span><span class="p">(</span><span class="n">pi</span><span class="o">-</span><span class="n">PI25DT</span><span class="p">));</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;wall clock time = %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">);</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span><span class="k">else</span> <span class="n">done</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">MPI_Finalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>2015年8月15日by septicmk。<br>
+若文中有误，请务必指出:)<br>
+注：<br>
+主要参考自<a href="https://computing.llnl.gov/tutorials/mpi/">这篇教程</a>,很多概念出自其中。<br>
+还有这个<a href="链接: http://pan.baidu.com/s/1bntynnh">ppt</a>,也非常实用，密码: 5r2v。</p>
+
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES * * */
+                    var disqus_shortname = 'septicmk';
+                    
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+                </div>
+             </div>
+        </div>
+    </div>
+    <div class="container-narrow">
+    <a id="gotop" href="#" style="display: inline;"><span>▲</span></a>
+        <footer>
+            <p>&copy; 2015 septicmk with help form <a href="https://github.com/lepture/mistune" target="_blank">mistune</a>.
+            Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/" target="_blank">Wixo</a></p>
+        </footer>
+    </div>
+    <script src="/source/js/jquery.imagesloaded.min.js"></script>
+    <script src="/source/js/gallery.js"></script>
+    <script src="/source/js/bootstrap.min.js"></script>
+    <script src="/source/js/jquery.tableofcontents.min.js"></script>
+    <script src="/source/js/tocgenerator.min.js"></script>
+    <script src="/source/js/main.js"></script>
+    <link rel="stylesheet" href="/source/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+    <script src="/source/fancybox/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript">
+    (function($){
+    $('.fancybox').fancybox();
+    })(jQuery);
+    </script>
+    <script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+    }); 
+    </script>
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</body>
+</html>
