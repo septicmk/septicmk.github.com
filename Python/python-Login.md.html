@@ -122,7 +122,7 @@ var _hmt = _hmt || [];
 </pre></div>
 </td></tr></table></div>
 <p>cookie一般这么写，之后使用<code>urllib2</code>的<code>Request</code>和<code>urlopen</code>会自己带上cookie。非常的科学。</p>
-<h3 id="toc-2">get和post</h3>
+<h3 id="toc-2">Get和Post</h3>
 <p>以下是get，就是<code>Request</code>之后再<code>urlopen</code>：</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -267,8 +267,8 @@ var _hmt = _hmt || [];
 <p>如果只有空格，也可以偷懒把空格replace成<code>%20</code>。</p>
 <h2 id="toc-4">上层逻辑</h2>
 <h3 id="toc-5">抓包分析</h3>
-<p>就用Chrome或者firefox抓，按下<code>F12</code>，然后点选<code>Network</code>，然后点击登陆，就可以看到，提交了那些信息。有时候网页可能会调用js，其实js最后还是会调用post，一样也可以用python来处理。
-<img src="http://7xl4a3.com1.z0.glb.clouddn.com/Screenshot%20from%202015-10-05%2022-09-51.png" alt="Chrome" title="chrome大法好"></p>
+<p>就用Chrome或者firefox抓，按下<code>F12</code>，然后点选<code>Network</code>，然后点击登陆，就可以看到，提交了那些信息。有时候网页可能会调用js，其实js最后还是会调用post，一样也可以用python来处理。</p>
+<p><img src="http://7xl4a3.com1.z0.glb.clouddn.com/Screenshot%20from%202015-10-05%2022-09-51.png" alt="Chrome" title="chrome大法好"></p>
 <h3 id="toc-6">正则处理</h3>
 <p>人登陆靠眼睛识别要点击的按钮，机器靠pattern正则识别要访问的url。下面这个函数返回html第一次出现的rex，ex控制允不允许为空，er是你希望的错误logging内容。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -320,8 +320,8 @@ var _hmt = _hmt || [];
 </td></tr></table></div>
 <p>另外附上<a href="http://tool.oschina.net/regex">正则测试</a></p>
 <h2 id="toc-7">其他</h2>
-<p>你可以从实际的脚本中获得更多内容，下面一个是某学校的网站登陆下载，一个是webqq登陆接受消息。
-参见<a href="https://github.com/tianxianbaobao/UCS">UCS</a>
+<p>你可以从实际的脚本中获得更多内容，下面一个是某学校的网站登陆下载，一个是webqq登陆接受消息。<br>
+参见<a href="https://github.com/tianxianbaobao/UCS">UCS</a><br>
 或者<a href="https://github.com/septicmk/Gnomeqq">GnomeQQ</a></p>
 
                 <div id="disqus_thread"></div>
