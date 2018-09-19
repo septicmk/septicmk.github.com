@@ -93,14 +93,14 @@ var _hmt = _hmt || [];
 </div><p>首先你得先装好MPICH或者openMPI。然后步骤是：</p>
 <ol>
 <li>运行<code>./bootstrap.sh</code></li>
-<li>在生成的<code>project-config.jam</code>文件中添加（注意冒号之前的空格啊）<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">using</span> <span class="n">mpi</span> <span class="p">;</span>
+<li>在生成的<code>project-config.jam</code>文件中添加（注意冒号之前的空格啊）<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">mpi</span> <span class="p">;</span>
 </pre></div>
 </td></tr></table></div>
 </li>
 <li>运行<code>/b2 install</code>, （可以考虑使用<code>--prefix=PATH</code>来自定义安装目录）</li>
 </ol>
 <p>好了，你可以用下面的命令来编译你的工程了。（这个是带serialization的版本）</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>mpic++ xxx.cpp /pathto/libboost_serialization.so /pathto/libboost_mpi.so -o xxx
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>mpic++ xxx.cpp /pathto/libboost_serialization.so /pathto/libboost_mpi.so -o xxx
 </pre></div>
 </td></tr></table></div>
 <p>还有一些配置<code>PATH</code>和<code>CPLUS_INCLUDE_PATH</code>还有<code>LD_LIBRARY_PATH</code>的细节，我不说聪明的你也是会配置的对吧。</p>
@@ -116,8 +116,8 @@ var _hmt = _hmt || [];
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/archive/text_oarchive.hpp&gt; </span>
-<span class="cp">#include &lt;iostream&gt; </span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/archive/text_oarchive.hpp&gt; </span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt; </span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
 <span class="p">{</span> 
@@ -131,9 +131,9 @@ var _hmt = _hmt || [];
 那么稍微高级一点，发送一个STL容器需要包含一个特别的头文件，然后<code>boost_MPI</code>会自动序列化这些容器。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/serialization/vector.hpp&gt;</span>
-<span class="cp">#include &lt;boost/serialization/string.hpp&gt;</span>
-<span class="cp">#include &lt;boost/serialization/queue.hpp&gt;</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/vector.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/string.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/queue.hpp&gt;</span><span class="cp"></span>
 </pre></div>
 </td></tr></table></div>
 <p>上面这些内容可能对你一点帮助也没有，毕竟你想要搜索解决的问题也不可能这么简单。</p>
@@ -151,7 +151,7 @@ var _hmt = _hmt || [];
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Test</span> <span class="p">{</span> 
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Test</span> <span class="p">{</span> 
 <span class="k">public</span><span class="o">:</span> 
   <span class="n">Test</span><span class="p">()</span> <span class="p">{}</span> 
 <span class="k">private</span><span class="o">:</span> 
@@ -168,7 +168,7 @@ var _hmt = _hmt || [];
 </td></tr></table></div>
 <p>非常简洁，你只要在<code>private</code>域中加上几行代码就ok了，你只要注意在<code>serialize</code>这个方法里依葫芦画瓢地把所有的成员变量写一边就好。然后<code>boost_MPI</code>就能自动的在发送时序列化这个类了。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">Test</span> <span class="n">t</span><span class="p">;</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">t</span><span class="p">;</span>
 <span class="n">boost</span><span class="o">::</span><span class="n">mpi</span><span class="o">::</span><span class="n">broadcast</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </td></tr></table></div>
@@ -200,7 +200,7 @@ var _hmt = _hmt || [];
 25
 26
 27
-28</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//Base</span>
+28</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">//Base</span>
 <span class="k">class</span> <span class="nc">Test</span> <span class="p">{</span> 
 <span class="k">public</span><span class="o">:</span> 
   <span class="n">Test</span><span class="p">()</span> <span class="p">{}</span> 
@@ -234,7 +234,7 @@ var _hmt = _hmt || [];
 <h3 id="toc-6">指针和引用序列化</h3>
 <p>使用C++肯定少不了使用指针，比如最常见的使用动态联编特性，用基类指针来调用子类方法。还用上面的那个例子来讲。只需要多加上一行</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/serialization/export.hpp&gt; </span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/export.hpp&gt; </span><span class="cp"></span>
 <span class="n">BOOST_CLASS_EXPORT</span><span class="p">(</span><span class="n">Testson</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
@@ -250,8 +250,8 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/mpi.hpp&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/mpi.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
   <span class="n">boost</span><span class="o">::</span><span class="n">mpi</span><span class="o">::</span><span class="n">environment</span> <span class="n">env</span><span class="p">{</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">};</span>
@@ -276,8 +276,8 @@ var _hmt = _hmt || [];
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/mpi.hpp&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/mpi.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
   <span class="n">boost</span><span class="o">::</span><span class="n">mpi</span><span class="o">::</span><span class="n">environment</span> <span class="n">env</span><span class="p">{</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">};</span>
@@ -315,10 +315,10 @@ var _hmt = _hmt || [];
 18
 19
 20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">include</span> <span class="o">&lt;</span><span class="n">boost</span><span class="o">/</span><span class="n">mpi</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;</span>
-<span class="cp">#include &lt;boost/serialization/string.hpp&gt;</span>
-<span class="cp">#include &lt;string&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
+21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="o">&lt;</span><span class="n">boost</span><span class="o">/</span><span class="n">mpi</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/string.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
   <span class="n">boost</span><span class="o">::</span><span class="n">mpi</span><span class="o">::</span><span class="n">environment</span> <span class="n">env</span><span class="p">{</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">};</span>
@@ -363,10 +363,10 @@ var _hmt = _hmt || [];
 22
 23
 24
-25</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/mpi.hpp&gt;</span>
-<span class="cp">#include &lt;boost/serialization/string.hpp&gt;</span>
-<span class="cp">#include &lt;string&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
+25</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/mpi.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/string.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
   <span class="n">boost</span><span class="o">::</span><span class="n">mpi</span><span class="o">::</span><span class="n">environment</span> <span class="n">env</span><span class="p">{</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">};</span>
@@ -406,10 +406,10 @@ var _hmt = _hmt || [];
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;boost/mpi.hpp&gt;</span>
-<span class="cp">#include &lt;boost/serialization/string.hpp&gt;</span>
-<span class="cp">#include &lt;string&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/mpi.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/serialization/string.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 <span class="p">{</span>

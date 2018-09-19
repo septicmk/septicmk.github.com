@@ -95,7 +95,7 @@ var _hmt = _hmt || [];
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">|</span>-blog
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">|</span>-blog
 <span class="p">|</span>  <span class="p">|</span>-source
 <span class="p">|</span>  <span class="p">|</span>-template
 <span class="p">|</span>  <span class="p">|</span>-post
@@ -116,10 +116,10 @@ Mistune的基本用法是:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mistune</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mistune</span>
 <span class="n">mdp</span> <span class="o">=</span> <span class="n">mistune</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">escape</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">hard_wrap</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">markdwon</span><span class="p">(</span><span class="s">&#39;I am using **mistune markdown parser**&#39;</span><span class="p">)</span>
-<span class="c"># output: &lt;p&gt;I am using &lt;strong&gt;mistune markdown parser&lt;/strong&gt;&lt;/p&gt;</span>
+<span class="n">markdwon</span><span class="p">(</span><span class="s1">&#39;I am using **mistune markdown parser**&#39;</span><span class="p">)</span>
+<span class="c1"># output: &lt;p&gt;I am using &lt;strong&gt;mistune markdown parser&lt;/strong&gt;&lt;/p&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <p>不过单单这样还不够称之为一个好页面。首先是得解决代码高亮的问题</p>
@@ -156,7 +156,7 @@ Mistune的基本用法是:</p>
 29
 30
 31
-32</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># main.py</span>
+32</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># main.py</span>
 <span class="kn">import</span> <span class="nn">mistune</span>
 <span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
 <span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
@@ -165,7 +165,7 @@ Mistune的基本用法是:</p>
 <span class="k">def</span> <span class="nf">block_code</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">inlinestyles</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">linenos</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s">u&#39;&lt;pre&gt;&lt;code&gt;</span><span class="si">%s</span><span class="s">&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">mistune</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">u</span><span class="s1">&#39;&lt;pre&gt;&lt;code&gt;</span><span class="si">%s</span><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mistune</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lexer</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">stripall</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -174,19 +174,19 @@ Mistune的基本用法是:</p>
         <span class="p">)</span>
         <span class="n">code</span> <span class="o">=</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">linenos</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;&lt;div class=&quot;highlight&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/div&gt;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">code</span>  <span class="c">#这句中的highlight是高亮代码的祖先选择器</span>
+            <span class="k">return</span> <span class="s1">&#39;&lt;div class=&quot;highlight&quot;&gt;</span><span class="si">%s</span><span class="s1">&lt;/div&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">code</span>  <span class="c1">#这句中的highlight是高亮代码的祖先选择器</span>
         <span class="k">return</span> <span class="n">code</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s">&#39;&lt;pre class=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;&lt;code&gt;</span><span class="si">%s</span><span class="s">&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;pre class=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&lt;code&gt;</span><span class="si">%s</span><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="n">lang</span><span class="p">,</span> <span class="n">mistune</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">HighlightMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">block_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="p">):</span>
-        <span class="c"># renderer has an options</span>
-        <span class="n">inlinestyles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;inlinestyles&#39;</span><span class="p">)</span>
-        <span class="n">linenos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;linenos&#39;</span><span class="p">)</span>
+        <span class="c1"># renderer has an options</span>
+        <span class="n">inlinestyles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inlinestyles&#39;</span><span class="p">)</span>
+        <span class="n">linenos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;linenos&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">block_code</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">inlinestyles</span><span class="p">,</span> <span class="n">linenos</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
@@ -195,7 +195,7 @@ Mistune的基本用法是:</p>
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">TocRenderer</span><span class="p">(</span><span class="n">HighlightMixin</span><span class="p">,</span> <span class="n">mistune</span><span class="o">.</span><span class="n">Renderer</span><span class="p">):</span> 
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TocRenderer</span><span class="p">(</span><span class="n">HighlightMixin</span><span class="p">,</span> <span class="n">mistune</span><span class="o">.</span><span class="n">Renderer</span><span class="p">):</span> 
     <span class="k">pass</span>
 
 <span class="n">renderer</span> <span class="o">=</span> <span class="n">TocRenderer</span><span class="p">(</span><span class="n">linenos</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">inlinestyles</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
@@ -204,7 +204,7 @@ Mistune的基本用法是:</p>
 </td></tr></table></div>
 <p>这样产生的html就是使用pygments加了特技的html了。<br>
 不过这还没完，现在的页面还不是代码高亮的。我们还得使用pygments来产生对应的css</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>pygmentize -f html -a .highlight -S monokai &gt; pygments.css
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>pygmentize -f html -a .highlight -S monokai &gt; pygments.css
 </pre></div>
 </td></tr></table></div>
 <p>其中的<code>.highlight</code>对应之前的祖先选择器，而monokai是我喜欢的一个配色方案。</p>
@@ -248,45 +248,45 @@ Mistune的基本用法是:</p>
 36
 37
 38
-39</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;zh&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;head&gt;</span>
-<span class="nt">&lt;title&gt;&lt;/title&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/bootstrap.min.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/font-awesome.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/style.css&quot;</span>  <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/highlight.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/pygments.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/google-fonts.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/responsive.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>  
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/css/sidenav.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>  
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/jquery-2.0.3.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-<span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-xs-12 col-sm-9 col-md-9 note&quot;</span><span class="nt">&gt;</span>
+39</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;zh&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/bootstrap.min.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/font-awesome.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/style.css&quot;</span>  <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/highlight.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/pygments.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/google-fonts.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/responsive.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>  
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/css/sidenav.css&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>  
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/jquery-2.0.3.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-xs-12 col-sm-9 col-md-9 note&quot;</span><span class="p">&gt;</span>
 
-    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;disqus_thread&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container-narrow&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;footer&gt;</span>
-    <span class="nt">&lt;p&gt;</span><span class="ni">&amp;copy;</span> 2015 septicmk with help form <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://github.com/lepture/mistune&quot;</span> <span class="na">target=</span><span class="s">&quot;_blank&quot;</span><span class="nt">&gt;</span>mistune<span class="nt">&lt;/a&gt;</span>.
-    Theme by <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://github.com/wzpan/hexo-theme-wixo/&quot;</span> <span class="na">target=</span><span class="s">&quot;_blank&quot;</span><span class="nt">&gt;</span>Wixo<span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
-    <span class="nt">&lt;/footer&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/jquery.imagesloaded.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/gallery.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/bootstrap.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/jquery.tableofcontents.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/tocgenerator.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/js/main.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;/source/fancybox/jquery.fancybox.css&quot;</span> <span class="na">media=</span><span class="s">&quot;screen&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/source/fancybox/jquery.fancybox.pack.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;disqus_thread&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container-narrow&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">footer</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="ni">&amp;copy;</span> 2015 septicmk with help form <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://github.com/lepture/mistune&quot;</span> <span class="na">target</span><span class="o">=</span><span class="s">&quot;_blank&quot;</span><span class="p">&gt;</span>mistune<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.
+    Theme by <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://github.com/wzpan/hexo-theme-wixo/&quot;</span> <span class="na">target</span><span class="o">=</span><span class="s">&quot;_blank&quot;</span><span class="p">&gt;</span>Wixo<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">footer</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/jquery.imagesloaded.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/gallery.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/bootstrap.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/jquery.tableofcontents.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/tocgenerator.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/js/main.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/source/fancybox/jquery.fancybox.css&quot;</span> <span class="na">media</span><span class="o">=</span><span class="s">&quot;screen&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/source/fancybox/jquery.fancybox.pack.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
     <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
     <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.fancybox&#39;</span><span class="p">).</span><span class="nx">fancybox</span><span class="p">();</span>
     <span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
-    <span class="nt">&lt;/script&gt;</span>
-<span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <p>当然，我们的css要重头写起是很难受的，于是我就从hexo的某个主题中偷了一个<a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>。在此感谢Mistune和Wixo的作者。(github开源大法好)<br>
@@ -319,35 +319,35 @@ Mistune的基本用法是:</p>
 26
 27
 28
-29</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">md2html</span><span class="p">(</span><span class="n">md_pwd</span><span class="p">,</span> <span class="n">mdp</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">root_path</span><span class="p">,</span> <span class="n">des</span><span class="p">):</span>
+29</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">md2html</span><span class="p">(</span><span class="n">md_pwd</span><span class="p">,</span> <span class="n">mdp</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">root_path</span><span class="p">,</span> <span class="n">des</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">template</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;template/&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">utils</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;template/utils.html&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">md</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">md_pwd</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;template/&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s1">&#39;.html&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">utils</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;template/utils.html&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">md</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">md_pwd</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="n">tool</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">)(</span><span class="s">&#39;file not found&#39;</span><span class="p">)</span>
+        <span class="n">tool</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)(</span><span class="s1">&#39;file not found&#39;</span><span class="p">)</span>
         <span class="k">return</span> 
     <span class="n">mdp</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">reset_toc</span><span class="p">()</span>
     <span class="n">args</span><span class="p">,</span> <span class="n">md</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;categories&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;draft&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;draft&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">args</span>
     <span class="n">md</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">utils</span><span class="o">+</span><span class="n">md</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">mdp</span><span class="p">(</span><span class="n">md</span><span class="p">)</span> 
-    <span class="n">args</span><span class="p">[</span><span class="s">&#39;content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content</span>
-    <span class="n">args</span><span class="p">[</span><span class="s">&#39;root_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_path</span>
-    <span class="n">args</span><span class="p">[</span><span class="s">&#39;meta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_meta</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-    <span class="n">args</span><span class="p">[</span><span class="s">&#39;this_href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;blog.septicmk.com/&quot;</span> <span class="o">+</span>  <span class="n">args</span><span class="p">[</span><span class="s">&#39;categories&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;shortcut&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;.html&#39;</span>
+    <span class="n">args</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content</span>
+    <span class="n">args</span><span class="p">[</span><span class="s1">&#39;root_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_path</span>
+    <span class="n">args</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_meta</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">args</span><span class="p">[</span><span class="s1">&#39;this_href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;blog.septicmk.com/&quot;</span> <span class="o">+</span>  <span class="n">args</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;shortcut&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span>
     <span class="n">html</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">template</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">_pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">des</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;categories&#39;</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;shortcut&#39;</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;.html&#39;</span><span class="p">)</span>
+        <span class="n">_pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">des</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;shortcut&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.html&#39;</span><span class="p">)</span>
         <span class="n">_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">_pwd</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">_dir</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">_dir</span><span class="p">)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">_pwd</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">_pwd</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="n">tool</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">)(</span><span class="s">&#39;html dir not found&#39;</span><span class="p">)</span>
+        <span class="n">tool</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)(</span><span class="s1">&#39;html dir not found&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
 <p>至于其中的args就是你的markdown页面前的那些文章属性</p>
@@ -376,9 +376,9 @@ categories: blog
 17
 18
 19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">re</span>
-<span class="n">INDENTATION</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;\n\s{2,}&#39;</span><span class="p">)</span>
-<span class="n">META</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^(\w+):\s*(.*(?:\n\s{2,}.*)*)\n&#39;</span><span class="p">)</span>
+20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">INDENTATION</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\n\s{2,}&#39;</span><span class="p">)</span>
+<span class="n">META</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(\w+):\s*(.*(?:\n\s{2,}.*)*)\n&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parse the given text into metadata and strip it for a Markdown parser.</span>
 
@@ -390,7 +390,7 @@ categories: blog
     <span class="k">while</span> <span class="n">m</span><span class="p">:</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">INDENTATION</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">INDENTATION</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
         <span class="n">rv</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)):]</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">META</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
@@ -414,8 +414,8 @@ categories: blog
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;disqus_thread&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;disqus_thread&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
       <span class="cm">/* * * CONFIGURATION VARIABLES * * */</span>
       <span class="kd">var</span> <span class="nx">disqus_shortname</span> <span class="o">=</span> <span class="s1">&#39;your name&#39;</span><span class="p">;</span>
 
@@ -425,8 +425,8 @@ categories: blog
           <span class="nx">dsq</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;//&#39;</span> <span class="o">+</span> <span class="nx">disqus_shortname</span> <span class="o">+</span> <span class="s1">&#39;.disqus.com/embed.js&#39;</span><span class="p">;</span>
           <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">dsq</span><span class="p">);</span>
       <span class="p">})();</span>
-  <span class="nt">&lt;/script&gt;</span>
-  <span class="nt">&lt;noscript&gt;</span>Please enable JavaScript to view the <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://disqus.com/?ref_noscript&quot;</span> <span class="na">rel=</span><span class="s">&quot;nofollow&quot;</span><span class="nt">&gt;</span>comments powered by Disqus.<span class="nt">&lt;/a&gt;&lt;/noscript&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">noscript</span><span class="p">&gt;</span>Please enable JavaScript to view the <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://disqus.com/?ref_noscript&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;nofollow&quot;</span><span class="p">&gt;</span>comments powered by Disqus.<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">noscript</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <p>把这段代码插到模板中你想显示评论区的地方就可以了。当然前提是你得有disqus的账号。</p>
@@ -457,31 +457,31 @@ categories: blog
 23
 24
 25
-26</pre></div></td><td class="code"><div class="highlight"><pre>{ macro btn(value, link, type=&#39;info&#39;) }
-<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;btn btn-{type}&quot;</span> <span class="na">href=</span><span class="s">&quot;{link}&quot;</span> <span class="na">target=</span><span class="s">&quot;_blank&quot;</span> <span class="na">rel=</span><span class="s">&quot;external&quot;</span><span class="nt">&gt;</span>{value}<span class="nt">&lt;/a&gt;</span>
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>{ macro btn(value, link, type=&#39;info&#39;) }
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-{type}&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{link}&quot;</span> <span class="na">target</span><span class="o">=</span><span class="s">&quot;_blank&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;external&quot;</span><span class="p">&gt;</span>{value}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
 { endmacro }
 
 { macro label(value, type=&#39;info&#39;) }
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;label label-{type}&quot;</span><span class="nt">&gt;</span>{value}<span class="nt">&lt;/span&gt;</span>
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;label label-{type}&quot;</span><span class="p">&gt;</span>{value}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
 { endmacro }
 
 { macro badge(number) }
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;badge&quot;</span><span class="nt">&gt;</span>{number}<span class="nt">&lt;/span&gt;</span>
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;badge&quot;</span><span class="p">&gt;</span>{number}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
 { endmacro }
 
 { macro alert(value, type=&#39;danger&#39;) }
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-{type}&quot;</span><span class="nt">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert alert-{type}&quot;</span><span class="p">&gt;</span>
     { if type == &#39;warning&#39; }
-    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">&quot;fa fa-bell&quot;</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-bell&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
     { elif type == &#39;danger&#39; }
-    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">&quot;fa fa-bug&quot;</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-bug&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
     { elif type == &#39;success&#39; }
-    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">&quot;fa fa-lightbulb-o&quot;</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-lightbulb-o&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
     { else }
-    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">&quot;fa fa-info&quot;</span><span class="nt">&gt;&lt;/i&gt;</span>
+    <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-info&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
     { endif }
     {value}
-<span class="nt">&lt;/div&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 { endmacro }
 </pre></div>
 </td></tr></table></div>
@@ -501,14 +501,14 @@ categories: blog
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/x-mathjax-config&quot;</span><span class="nt">&gt;</span> 
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/x-mathjax-config&quot;</span><span class="p">&gt;</span> 
     <span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span> 
         <span class="nx">tex2jax</span><span class="o">:</span> <span class="p">{</span><span class="nx">inlineMath</span><span class="o">:</span> <span class="p">[[</span><span class="s1">&#39;$&#39;</span><span class="p">,</span><span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;\\(&#39;</span><span class="p">,</span><span class="s1">&#39;\\)&#39;</span><span class="p">]]}</span> 
     <span class="p">});</span> 
-<span class="nt">&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span>
-    <span class="na">src=</span><span class="s">&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/script&gt;</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span>
+    <span class="na">src</span><span class="o">=</span><span class="s">&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <p>把这段代码放到<code>&lt;/body&gt;</code>这个标签前面就能自由的使用Latex写数学公式啦。</p>
@@ -517,13 +517,13 @@ categories: blog
 <p>首先页面的title是一定要写的，除了title之外。你还得写一些meta标签来讨好搜索引擎。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;septicmk&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;如何搭建静态博客&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;Keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;python,jinja2,pygments,SEO&quot;</span><span class="nt">&gt;</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;author&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;septicmk&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;如何搭建静态博客&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Keywords&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;python,jinja2,pygments,SEO&quot;</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <p>根据google的一些设定，你必须有一个herlang的标签</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;alternate&quot;</span> <span class="na">hreflang=</span><span class="s">&quot;zh-Hans&quot;</span> <span class="na">href=</span><span class="s">&quot;blog.septicmk.com/&quot;</span><span class="nt">&gt;</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;alternate&quot;</span> <span class="na">hreflang</span><span class="o">=</span><span class="s">&quot;zh-Hans&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;blog.septicmk.com/&quot;</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table></div>
 <h3 id="toc-11">sitemap</h3>
@@ -552,29 +552,29 @@ categories: blog
 21
 22
 23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">sitemap_update</span><span class="p">():</span>
+24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sitemap_update</span><span class="p">():</span>
     <span class="n">pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-    <span class="n">_pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pwd</span><span class="p">,</span><span class="s">&#39;html&#39;</span><span class="p">,</span><span class="s">&#39;sitemap.xml&#39;</span><span class="p">)</span>
-    <span class="n">des</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">_pwd</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
-    <span class="n">conf</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<span class="s">&lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;</span>
-<span class="s">xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
-<span class="s">xsi:schemaLocation=&quot;http://www.sitemaps.org/schemas/sitemap/0.9</span>
-<span class="s">http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd&quot;&gt;</span>
-<span class="s">&quot;&quot;&quot;</span>
-    <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;url&gt;&lt;loc&gt;http://blog.septicmk.com/&lt;/loc&gt;&quot;</span>
-    <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;lastmod&gt;&quot;</span><span class="o">+</span> <span class="n">get_mod_time</span><span class="p">(</span><span class="s">&quot;html/index.html&quot;</span><span class="p">)</span> <span class="o">+</span><span class="s">u&quot;&lt;/lastmod&gt;&quot;</span>
-    <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;changefreq&gt;weekly&lt;/changefreq&gt;&quot;</span>
-    <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;priority&gt;1.00&lt;/priority&gt;&lt;/url&gt;&quot;</span>
-    <span class="n">list_dirs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">&#39;html&#39;</span><span class="p">)</span>
+    <span class="n">_pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pwd</span><span class="p">,</span><span class="s1">&#39;html&#39;</span><span class="p">,</span><span class="s1">&#39;sitemap.xml&#39;</span><span class="p">)</span>
+    <span class="n">des</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">_pwd</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="s2">&lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;</span>
+<span class="s2">xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+<span class="s2">xsi:schemaLocation=&quot;http://www.sitemaps.org/schemas/sitemap/0.9</span>
+<span class="s2">http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd&quot;&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;url&gt;&lt;loc&gt;http://blog.septicmk.com/&lt;/loc&gt;&quot;</span>
+    <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;lastmod&gt;&quot;</span><span class="o">+</span> <span class="n">get_mod_time</span><span class="p">(</span><span class="s2">&quot;html/index.html&quot;</span><span class="p">)</span> <span class="o">+</span><span class="sa">u</span><span class="s2">&quot;&lt;/lastmod&gt;&quot;</span>
+    <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;changefreq&gt;weekly&lt;/changefreq&gt;&quot;</span>
+    <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;priority&gt;1.00&lt;/priority&gt;&lt;/url&gt;&quot;</span>
+    <span class="n">list_dirs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">list_dirs</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.html&#39;</span><span class="p">):</span>
-                <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;url&gt;&lt;loc&gt;http://blog.septicmk.com/&quot;</span><span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">f</span><span class="p">)[</span><span class="mi">5</span><span class="p">:]</span> <span class="o">+</span> <span class="s">u&quot;&lt;/loc&gt;&quot;</span>
-                <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;lastmod&gt;&quot;</span><span class="o">+</span> <span class="n">get_mod_time</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">f</span><span class="p">))</span> <span class="o">+</span> <span class="s">u&quot;&lt;/lastmod&gt;&quot;</span>
-                <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;changefreq&gt;weekly&lt;/changefreq&gt;&quot;</span>
-                <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;priority&gt;0.80&lt;/priority&gt;&lt;/url&gt;&quot;</span>
-    <span class="n">conf</span> <span class="o">+=</span> <span class="s">u&quot;&lt;/urlset&gt;&quot;</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.html&#39;</span><span class="p">):</span>
+                <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;url&gt;&lt;loc&gt;http://blog.septicmk.com/&quot;</span><span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">f</span><span class="p">)[</span><span class="mi">5</span><span class="p">:]</span> <span class="o">+</span> <span class="sa">u</span><span class="s2">&quot;&lt;/loc&gt;&quot;</span>
+                <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;lastmod&gt;&quot;</span><span class="o">+</span> <span class="n">get_mod_time</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">f</span><span class="p">))</span> <span class="o">+</span> <span class="sa">u</span><span class="s2">&quot;&lt;/lastmod&gt;&quot;</span>
+                <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;changefreq&gt;weekly&lt;/changefreq&gt;&quot;</span>
+                <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;priority&gt;0.80&lt;/priority&gt;&lt;/url&gt;&quot;</span>
+    <span class="n">conf</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;&lt;/urlset&gt;&quot;</span>
     <span class="n">des</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
@@ -597,13 +597,13 @@ categories: blog
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="nv">path_blog</span><span class="o">=</span> ~/blog
 <span class="nb">cd</span> <span class="nv">$path_blog</span>
 make clean
 make
 make sitemap
-<span class="nb">cd </span>html
+<span class="nb">cd</span> html
 git add -A
 git commit -m <span class="sb">`</span>date +%Y%m%d<span class="sb">`</span>
 git push blog master
@@ -611,7 +611,7 @@ git push blog master
 </td></tr></table></div>
 <p>使用crontab来定时任务。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre>crontab -e
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>crontab -e
 <span class="m">30</span> <span class="m">21</span> * * * ~/auto/auto_deploy.sh
 </pre></div>
 </td></tr></table></div>

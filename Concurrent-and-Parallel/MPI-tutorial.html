@@ -86,7 +86,7 @@ MPI采用简单暴力的多进程来实现并行。即将同样的程序拷贝�
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre>wget http://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>wget http://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz
 tar zxf mpich-3.1.4.tar.gz
 ./configure --disable-fortran
 make -j4
@@ -108,9 +108,9 @@ make install
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//hello.c</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;mpi.h&gt;</span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">//hello.c</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;mpi.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 <span class="p">{</span>
@@ -126,7 +126,7 @@ make install
 <p>编译，然后执行它：</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre>mpicc -o hello hello.c
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>mpicc -o hello hello.c
 mpirun -np <span class="m">4</span> ./hello
 mpiexec -n <span class="m">4</span> ./hello
 </pre></div>
@@ -136,17 +136,17 @@ mpirun是MPI各个实现的启动MPI的方式，而mpiexec是MPI标准启动方�
 <h3 id="toc-3">基本的API</h3>
 <p>初始化。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Init</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span><span class="n">argv</span><span class="p">[]);</span> <span class="c1">//这句应该放在所有并行操作的最前面。</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Init</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span><span class="n">argv</span><span class="p">[]);</span> <span class="c1">//这句应该放在所有并行操作的最前面。</span>
 <span class="kt">int</span> <span class="nf">MPI_Initialized</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">flag</span><span class="p">);</span> <span class="c1">//是否初始化， 结果保存在flag中</span>
 </pre></div>
 </td></tr></table></div>
 <p>并行结束。</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Finalize</span><span class="p">();</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Finalize</span><span class="p">();</span>
 </pre></div>
 </td></tr></table></div>
 <p>rank和进程数目。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">size</span><span class="p">);</span> <span class="c1">//把comm通信下的processor的个数存入size中</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">size</span><span class="p">);</span> <span class="c1">//把comm通信下的processor的个数存入size中</span>
 <span class="kt">int</span> <span class="nf">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">rank</span><span class="p">);</span> <span class="c1">//当前进程的的标识存入rank中(0 ~ size-1)</span>
 </pre></div>
 </td></tr></table></div>
@@ -155,7 +155,7 @@ mpirun是MPI各个实现的启动MPI的方式，而mpiexec是MPI标准启动方�
 使用这两个函数，可以方便的实现master-slave的并行模式。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="n">DoMaster</span><span class="p">();</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="n">DoMaster</span><span class="p">();</span>
 <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> <span class="n">DoSlave1</span><span class="p">();</span>
 <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="n">DoSlave2</span><span class="p">();</span>
 </pre></div>
@@ -163,7 +163,7 @@ mpirun是MPI各个实现的启动MPI的方式，而mpiexec是MPI标准启动方�
 <p>把每个进程处理的函数写到对应的函数中将是一个明智的选择。</p>
 <p>时间测定。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Wtime</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">//程序此刻的时间戳</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Wtime</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">//程序此刻的时间戳</span>
 <span class="kt">int</span> <span class="nf">MPI_Wtick</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">//两个时钟脉冲间隔</span>
 </pre></div>
 </td></tr></table></div>
@@ -198,9 +198,9 @@ mpirun是MPI各个实现的启动MPI的方式，而mpiexec是MPI标准启动方�
 26
 27
 28
-29</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;mpi.h&gt;</span>
+29</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;mpi.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argv</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argc</span><span class="p">[]){</span>
     <span class="kt">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">tot</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
@@ -237,7 +237,7 @@ mpirun是MPI各个实现的启动MPI的方式，而mpiexec是MPI标准启动方�
 <li><p><strong>标准通信模式(The Standard mode)</strong>
  标准通信模式下。使不使用<strong>缓存</strong>。是由MPI本身决定的。缓冲区不是MPI的标准，但允许是MPI某个实现的一部分。<br>
  如果有缓存，每个processor都有独立的一个的system buffer。它们是下图所示：
-<img src="http://7xl4a3.com1.z0.glb.clouddn.com/buffer_recv.gif" alt="system buffer" title="System Buffer"><br>
+<img src="/imgs/buffer_recv.gif" alt="system buffer" title="System Buffer"><br>
  讨论缓冲区时要区别System Buffer和Application Buffer
 System Buffer的特点是:</p>
 <pre class="plain"><code>对程序员透明，由MPI底层控制;
@@ -249,7 +249,7 @@ System Buffer的特点是:</p>
 <p>涉及到的API：</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Send</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Send</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">MPI_Recv</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">source</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span><span class="p">);</span>
 <span class="n">MPI_Status</span> <span class="n">status</span><span class="p">;</span>
 </pre></div>
@@ -258,13 +258,13 @@ System Buffer的特点是:</p>
  dest和source则表示信息的目的地和来源。而tag表示消息的一个标识。也有<code>MPI_ANY_SOURCE</code>和<code>MPI_ANY_TAG</code>这两个值，表示接收所有source，所有tag的信息。comm这个参数同上不解释，status这个参数存储这接收到的信息的状态。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">status</span><span class="p">.</span><span class="n">MPI_SOURCE</span>  <span class="c1">//信息来源</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">status</span><span class="p">.</span><span class="n">MPI_SOURCE</span>  <span class="c1">//信息来源</span>
 <span class="n">status</span><span class="p">.</span><span class="n">MPI_TAG</span>     <span class="c1">//信息的Tag</span>
 <span class="n">MPI_Get_count</span><span class="p">(</span><span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span><span class="p">,</span> <span class="n">MPI_datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">count</span><span class="p">)</span>  <span class="c1">//多少个该类型的数据。</span>
 </pre></div>
 </td></tr></table></div>
 <p>对于数据类型，基本的类型有：</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_CHAR</span><span class="p">,</span><span class="n">MPI_DOUBLE</span><span class="p">,</span><span class="n">MPI_FLOAT</span><span class="p">,</span><span class="n">MPI_INT</span><span class="p">,</span><span class="n">MPI_LONG</span><span class="p">,</span><span class="n">MPI_LONG_DOUBLE</span><span class="p">,</span><span class="n">MPI_SHORT</span><span class="p">,</span><span class="n">MPI_UNSIGNED_CHAR</span><span class="p">,</span><span class="n">MPI_UNSIGNED</span><span class="p">,</span><span class="n">MPI_UNSIGNED_LONG</span><span class="p">,</span><span class="n">MPI_UNSIGNED_SHORT</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_CHAR</span><span class="p">,</span><span class="n">MPI_DOUBLE</span><span class="p">,</span><span class="n">MPI_FLOAT</span><span class="p">,</span><span class="n">MPI_INT</span><span class="p">,</span><span class="n">MPI_LONG</span><span class="p">,</span><span class="n">MPI_LONG_DOUBLE</span><span class="p">,</span><span class="n">MPI_SHORT</span><span class="p">,</span><span class="n">MPI_UNSIGNED_CHAR</span><span class="p">,</span><span class="n">MPI_UNSIGNED</span><span class="p">,</span><span class="n">MPI_UNSIGNED_LONG</span><span class="p">,</span><span class="n">MPI_UNSIGNED_SHORT</span>
 </pre></div>
 </td></tr></table></div>
 <p>基本上看名字就知道在C中对应的类型。
@@ -300,8 +300,8 @@ System Buffer的特点是:</p>
 27
 28
 29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &quot;mpi.h&quot;</span>
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;mpi.h&quot;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
     <span class="kt">int</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">rc</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> 
@@ -335,14 +335,14 @@ System Buffer的特点是:</p>
 <ul>
 <li><p><strong>同步通信模式(The Synchronous mode)</strong>
  理解上述的标准模式，同步模式就好说了。所谓同步，指的是信息传输终止于<strong>接收方已经开始将数据拷贝到Application Buffer中去</strong>。只有一个API</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Ssend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_Ssend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 </pre></div>
 </td></tr></table></div>
 <p>参数列表和<code>MPI_Send</code>一样。</p>
 </li>
 <li><p><strong>准备好通信模式(The Ready mode)</strong>
  仅仅在程序员100%确定发送时接收方已经准备好时使用。不过在MPI的各种实现中基本上和标准的<code>MPI_Send</code>一样。</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Rsend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_Rsend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 </pre></div>
 </td></tr></table></div>
 </li>
@@ -350,7 +350,7 @@ System Buffer的特点是:</p>
  人工开辟一片System Buffer给程序员使用，使用方式就如同标准通信模式带缓存的情况。一般用来弥补System Buffer不足的缺点。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Bsend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comma</span><span class="p">);</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_Bsend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comma</span><span class="p">);</span>
 <span class="n">MPI_Buffer_attach</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
 <span class="n">MPI_Buffer_detach</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buff</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
 </pre></div>
@@ -369,7 +369,7 @@ System Buffer的特点是:</p>
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Isend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">)</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Isend</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">)</span>
 <span class="kt">int</span> <span class="n">MPI_Irecv</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="kt">int</span> <span class="n">source</span><span class="p">,</span> <span class="kt">int</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="n">MPI_Request</span> <span class="o">*</span><span class="n">request</span><span class="p">)</span>
 
 <span class="n">MPI_Wait</span><span class="p">(</span><span class="n">MPI_Request</span> <span class="o">*</span><span class="n">request</span><span class="p">,</span> <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span><span class="p">);</span>
@@ -414,9 +414,9 @@ System Buffer的特点是:</p>
 32
 33
 34
-35</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;unistd.h&gt;</span>
-<span class="cp">#include &quot;mpi.h&quot;</span>
+35</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;mpi.h&quot;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
     <span class="kt">int</span> <span class="n">numtasks</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">buf</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">tag1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tag2</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
@@ -516,8 +516,8 @@ System Buffer的特点是:</p>
 30
 31
 32
-33</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &quot;mpi.h&quot;</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+33</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;mpi.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#define SIZE 4</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
@@ -553,16 +553,16 @@ System Buffer的特点是:</p>
 </td></tr></table></div>
 <h3 id="toc-9">集体同步</h3>
 <p>强制所有processor都运行到函数调用时才继续执行之后的语句。</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Barrier</span> <span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_Barrier</span> <span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 </pre></div>
 </td></tr></table></div>
 <h3 id="toc-10">数据传输</h3>
 <p>brodcast，scatter，gather，reduction的区别见下：
-<img src="http://7xl4a3.com1.z0.glb.clouddn.com/data_movement.gif" alt="Data Movement" title="Data Movement"></p>
+<img src="/imgs/data_movement.gif" alt="Data Movement" title="Data Movement"></p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Bcast</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Bcast</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">MPI_Scatter</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">recvcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">MPI_Gather</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">recvcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">MPI_Alltoall</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">recvcnt</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
@@ -572,13 +572,13 @@ System Buffer的特点是:</p>
 <h3 id="toc-11">规约</h3>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">MPI_Reduce</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Reduce</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">MPI_Datatype</span> <span class="n">datatype</span><span class="p">,</span><span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">root</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">MPI_Op_create</span><span class="p">(</span><span class="n">MPI_User_function</span> <span class="o">*</span><span class="n">function</span><span class="p">,</span> <span class="kt">int</span> <span class="n">commute</span><span class="p">,</span> <span class="n">MPI_Op</span> <span class="o">*</span><span class="n">op</span><span class="p">);</span>
 <span class="c1">//typedef void (MPI_User_function) ( void * a, void * b, int * len, MPI_Datatype * );</span>
 </pre></div>
 </td></tr></table></div>
 <p>上述这个op就是规约的函数，用过MapReduce的肯定不陌生。</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_MAX</span><span class="p">,</span><span class="n">MPI_MIN</span><span class="p">,</span><span class="n">MPI_SUM</span> <span class="p">...</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_MAX</span><span class="p">,</span><span class="n">MPI_MIN</span><span class="p">,</span><span class="n">MPI_SUM</span> <span class="p">...</span>
 </pre></div>
 </td></tr></table></div>
 <p>当然也可以自己定义函数<code>MPI_Op_create</code>，不过得对C的函数指针有些了解。</p>
@@ -626,8 +626,8 @@ System Buffer的特点是:</p>
 38
 39
 40
-41</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &quot;mpi.h&quot;</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+41</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;mpi.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#define NPROCS 8</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
@@ -703,7 +703,7 @@ System Buffer的特点是:</p>
 21
 22
 23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">MPI_Type_contiguous</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">oldtype</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span> 
+24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">MPI_Type_contiguous</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">oldtype</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span> 
 <span class="c1">//count个连续的oldtype构成新的type</span>
 
 <span class="n">MPI_Type_vector</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span><span class="n">blocklength</span><span class="p">,</span><span class="n">stride</span><span class="p">,</span><span class="n">oldtype</span><span class="p">,</span><span class="o">&amp;</span><span class="n">newtype</span><span class="p">)</span>
@@ -794,8 +794,8 @@ System Buffer的特点是:</p>
 62
 63
 64
-65</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &quot;mpi.h&quot;</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+65</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;mpi.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#define NELEM 25</span>
 
 <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  <span class="p">{</span>
@@ -864,7 +864,7 @@ System Buffer的特点是:</p>
 <h2 id="toc-14">其他</h2>
 <p>最后再给个例子。也是很多MPI教程常见的利用积分计算PI的值：</p>
 <p>$$\pi=\int_0^1{\frac{4}{1+x^2}dx}$$</p>
-<p><img src="http://7xl4a3.com1.z0.glb.clouddn.com/pi.png" alt="PI" title="PI"></p>
+<p><img src="/imgs/pi.png" alt="PI" title="PI"></p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -906,9 +906,9 @@ System Buffer的特点是:</p>
 39
 40
 41
-42</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;math.h&gt;</span>
-<span class="cp">#include &quot;mpi.h&quot;</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;mpi.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="kt">double</span> <span class="nf">f</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">){</span>
     <span class="k">return</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">));</span>

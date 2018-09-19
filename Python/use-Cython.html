@@ -89,7 +89,7 @@ var _hmt = _hmt || [];
 比如说，如果你要写一个add(x，y)函数，首先:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># add.pyx</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># add.pyx</span>
 <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 </pre></div>
@@ -102,24 +102,24 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># setup.py</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># setup.py</span>
 <span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 <span class="kn">from</span> <span class="nn">Cython.Build</span> <span class="kn">import</span> <span class="n">cythonize</span>
 
 <span class="n">setup</span><span class="p">(</span>
-  <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;add&#39;</span><span class="p">,</span>
-  <span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">(</span><span class="s">&quot;add.pyx&quot;</span><span class="p">),</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span>
+  <span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">(</span><span class="s2">&quot;add.pyx&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
 <p>然后编译:</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>python setup.py build_ext --inplace
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>python setup.py build_ext --inplace
 </pre></div>
 </td></tr></table></div>
 <p>在你需要调用的地方:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># main.py</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># main.py</span>
 <span class="kn">import</span> <span class="nn">add</span>
 <span class="k">print</span> <span class="n">add</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -133,13 +133,13 @@ var _hmt = _hmt || [];
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span>
 <span class="n">cdef</span> <span class="n">struct</span> <span class="n">node</span><span class="p">:</span>
     <span class="nb">int</span> <span class="n">key</span>
     <span class="nb">float</span> <span class="n">value</span>
 <span class="n">cdef</span> <span class="n">enum</span><span class="p">:</span>
     <span class="n">const</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cdef</span> <span class="n">bint</span> <span class="n">flag</span> <span class="c"># bool类型使用bint代替</span>
+<span class="n">cdef</span> <span class="n">bint</span> <span class="n">flag</span> <span class="c1"># bool类型使用bint代替</span>
 </pre></div>
 </td></tr></table></div>
 <p>你可以用一个cdef来把他们写到一起:</p>
@@ -149,7 +149,7 @@ var _hmt = _hmt || [];
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span><span class="p">:</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span><span class="p">:</span>
     <span class="n">cdef</span> <span class="n">struct</span> <span class="n">node</span><span class="p">:</span>
         <span class="nb">int</span> <span class="n">key</span>
         <span class="nb">float</span> <span class="n">value</span>
@@ -159,7 +159,7 @@ var _hmt = _hmt || [];
 </pre></div>
 </td></tr></table></div>
 <p>还可以使用<code>ctypedef</code>来定义类型名称。</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">ctypedef</span> <span class="nb">long</span> <span class="nb">long</span> <span class="n">LL</span>
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">ctypedef</span> <span class="nb">long</span> <span class="nb">long</span> <span class="n">LL</span>
 </pre></div>
 </td></tr></table></div>
 <h3 id="toc-3">函数</h3>
@@ -174,7 +174,7 @@ var _hmt = _hmt || [];
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fib_cdef</span><span class="p">(</span><span class="nb">int</span> <span class="n">n</span><span class="p">):</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib_cdef</span><span class="p">(</span><span class="nb">int</span> <span class="n">n</span><span class="p">):</span>
   <span class="n">cdef</span> <span class="nb">int</span> <span class="n">fib_in_c</span><span class="p">(</span><span class="nb">int</span> <span class="n">n</span><span class="p">):</span>
       <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
           <span class="k">return</span> <span class="n">n</span>
@@ -191,7 +191,7 @@ var _hmt = _hmt || [];
     结论: 使用cdef会变得更快，基本和直接用C差不多
 </div><p>然而使用<code>cdef</code>报错不能很好的捕获异常。你可以这样使用</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="nb">int</span> <span class="n">divide</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">)</span> <span class="k">except</span> <span class="mi">0</span><span class="p">:</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="nb">int</span> <span class="n">divide</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">)</span> <span class="k">except</span> <span class="mi">0</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </td></tr></table></div>
@@ -205,7 +205,7 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">+-------------------------------------------------------------------------------------------+</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">+-------------------------------------------------------------------------------------------+</span>
 <span class="o">|</span>                <span class="n">C</span> <span class="n">types</span>                          <span class="o">|</span>  <span class="n">From</span> <span class="n">Python</span> <span class="n">types</span>  <span class="o">|</span>  <span class="n">To</span> <span class="n">Python</span> <span class="n">types</span>  <span class="o">|</span>  
 <span class="o">|</span> <span class="p">[</span><span class="n">unsigned</span><span class="p">]</span> <span class="n">char</span> <span class="p">[</span><span class="n">unsigned</span><span class="p">]</span> <span class="n">short</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">long</span>      <span class="o">|</span>  <span class="nb">int</span><span class="p">,</span> <span class="nb">long</span>          <span class="o">|</span>    <span class="nb">int</span>            <span class="o">|</span> 
 <span class="o">|</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">unsigned</span> <span class="nb">long</span> <span class="p">[</span><span class="n">unsigned</span><span class="p">]</span> <span class="nb">long</span> <span class="nb">long</span> <span class="o">|</span>  <span class="nb">int</span><span class="p">,</span> <span class="nb">long</span>          <span class="o">|</span>    <span class="nb">long</span>           <span class="o">|</span>  
@@ -220,7 +220,7 @@ var _hmt = _hmt || [];
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
     <span class="o">...</span>
 <span class="n">cdef</span> <span class="nb">int</span> <span class="n">func</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">):</span>
     <span class="o">...</span>
@@ -233,7 +233,7 @@ var _hmt = _hmt || [];
     结论: 指定静态类型大约有35%的提速。
 </div><p>另一方面，如果需要检测传入的参数不是<code>None</code>的话可以加上<code>not None</code>来检测</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </td></tr></table></div>
@@ -250,11 +250,11 @@ var _hmt = _hmt || [];
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="nb">int</span><span class="p">[:,:,:]</span> <span class="n">view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="nb">int</span><span class="p">[:,:,:]</span> <span class="n">view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">cdef</span> <span class="nb">int</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">cdef</span> <span class="nb">int</span><span class="p">[:,:,:]</span> <span class="n">view</span> <span class="o">=</span> <span class="n">x</span>
-<span class="n">cdef</span> <span class="nb">int</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="mi">1</span><span class="p">]</span> <span class="n">c_contiguous</span> <span class="o">=</span> <span class="n">c_contig</span> <span class="c"># C的按行存储</span>
-<span class="n">cdef</span> <span class="nb">int</span><span class="p">[::</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="n">f_contiguous</span> <span class="o">=</span> <span class="n">f_contig</span> <span class="c"># Fortran的按列存储</span>
+<span class="n">cdef</span> <span class="nb">int</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="mi">1</span><span class="p">]</span> <span class="n">c_contiguous</span> <span class="o">=</span> <span class="n">c_contig</span> <span class="c1"># C的按行存储</span>
+<span class="n">cdef</span> <span class="nb">int</span><span class="p">[::</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="n">f_contiguous</span> <span class="o">=</span> <span class="n">f_contig</span> <span class="c1"># Fortran的按列存储</span>
 
 <span class="n">cpdef</span> <span class="n">histogram</span><span class="p">(</span><span class="nb">int</span><span class="p">[:,:]</span> <span class="n">image</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -268,7 +268,7 @@ var _hmt = _hmt || [];
 <p>你几乎可以像使用numpy的array一样的使用Memoryview，不过仍然有一些限制，<a href="http://docs.cython.org/src/userguide/memoryviews.html">详细内容</a><br>
 在一些较老的资料中，你也许会见到像下面这样的写法:</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">unsigned</span> <span class="n">char</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;c&quot;</span><span class="p">]</span> <span class="n">array</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">unsigned</span> <span class="n">char</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;c&quot;</span><span class="p">]</span> <span class="n">array</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </td></tr></table></div>
@@ -290,9 +290,9 @@ var _hmt = _hmt || [];
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="k">class</span> <span class="nc">Rect</span><span class="p">:</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="k">class</span> <span class="nc">Rect</span><span class="p">:</span>
     <span class="n">cdef</span> <span class="nb">int</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">int</span> <span class="n">w</span><span class="p">,</span> <span class="nb">int</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">int</span> <span class="n">w</span><span class="p">,</span> <span class="nb">int</span> <span class="n">h</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">w</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">h</span>
     <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -315,16 +315,16 @@ var _hmt = _hmt || [];
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">shop</span><span class="p">:</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">shop</span><span class="p">:</span>
     <span class="n">cdef</span> <span class="nb">object</span> <span class="n">goods</span>
     <span class="k">def</span> <span class="nf">__cinit__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">goods</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="nb">property</span> <span class="n">goods</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s">&quot;We have: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">goods</span>
-        <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;We have: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">goods</span>
+        <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">goods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">goods</span><span class="p">[:]</span>
 </pre></div>
 </td></tr></table></div>
@@ -339,17 +339,17 @@ var _hmt = _hmt || [];
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="k">class</span> <span class="nc">Penguin</span><span class="p">:</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="k">class</span> <span class="nc">Penguin</span><span class="p">:</span>
     <span class="n">cdef</span> <span class="nb">object</span> <span class="n">food</span>
 
     <span class="k">def</span> <span class="nf">__cinit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">food</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">food</span> <span class="o">=</span> <span class="n">food</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">food</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;eating!&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">food</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;eating!&quot;</span><span class="p">)</span>
 
-<span class="n">normal_penguin</span> <span class="o">=</span> <span class="n">Penguin</span><span class="p">(</span><span class="s">&#39;fish&#39;</span><span class="p">)</span>
-<span class="n">fast_penguin</span> <span class="o">=</span> <span class="n">Penguin</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">Penguin</span><span class="p">,</span> <span class="s">&#39;wheat&#39;</span><span class="p">)</span>  <span class="c"># note: not calling __init__() !</span>
+<span class="n">normal_penguin</span> <span class="o">=</span> <span class="n">Penguin</span><span class="p">(</span><span class="s1">&#39;fish&#39;</span><span class="p">)</span>
+<span class="n">fast_penguin</span> <span class="o">=</span> <span class="n">Penguin</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">Penguin</span><span class="p">,</span> <span class="s1">&#39;wheat&#39;</span><span class="p">)</span>  <span class="c1"># note: not calling __init__() !</span>
 </pre></div>
 </td></tr></table></div>
 <p>所以最求效率的化，尽量使用<code>__cinit__</code>吧。对于经常创建/删除实例的类，可以在前面加上<code>@cython.freelist(n)</code>的装饰器。可以获得更好的性能。</p>
@@ -363,7 +363,7 @@ var _hmt = _hmt || [];
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">libcpp.vector</span> <span class="nn">cimport</span> <span class="nn">vector</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">libcpp.vector</span> <span class="nn">cimport</span> <span class="nn">vector</span>
 
 <span class="n">cdef</span> <span class="n">vector</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="n">vect</span>
 <span class="n">cdef</span> <span class="nb">int</span> <span class="n">i</span>
@@ -383,7 +383,7 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">+-------------------------------------------------+</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">+-------------------------------------------------+</span>
 <span class="o">|</span>   <span class="n">Python</span> <span class="nb">type</span>  <span class="o">=&gt;</span>   <span class="n">C</span><span class="o">++</span> <span class="nb">type</span>  <span class="o">=&gt;</span> <span class="n">Python</span> <span class="nb">type</span>    <span class="o">|</span>
 <span class="o">|</span><span class="nb">bytes</span>           <span class="o">|</span>  <span class="n">std</span><span class="p">::</span><span class="n">string</span> <span class="o">|</span>   <span class="nb">bytes</span>         <span class="o">|</span>
 <span class="o">|</span><span class="n">iterable</span>        <span class="o">|</span>  <span class="n">std</span><span class="p">::</span><span class="n">vector</span> <span class="o">|</span>   <span class="nb">list</span>          <span class="o">|</span>  
@@ -401,7 +401,7 @@ var _hmt = _hmt || [];
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="n">extern</span> <span class="nb">int</span> <span class="n">add</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">)</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="n">extern</span> <span class="nb">int</span> <span class="n">add</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">add_py</span><span class="p">(</span><span class="nb">int</span> <span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="n">y</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -419,7 +419,7 @@ var _hmt = _hmt || [];
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//rectangle.h</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">//rectangle.h</span>
 
 <span class="k">namespace</span> <span class="n">shapes</span> <span class="p">{</span>
     <span class="k">class</span> <span class="nc">Rectangle</span> <span class="p">{</span>
@@ -445,9 +445,9 @@ var _hmt = _hmt || [];
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//rectangle.cpp</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">//rectangle.cpp</span>
 
-<span class="cp">#include &quot;Rectangle.h&quot;</span>
+<span class="cp">#include</span> <span class="cpf">&quot;Rectangle.h&quot;</span><span class="cp"></span>
 <span class="k">namespace</span> <span class="n">shapes</span> <span class="p">{</span>
     <span class="n">Rectangle</span><span class="o">::</span><span class="n">Rectangle</span><span class="p">(</span><span class="kt">int</span> <span class="n">X0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Y0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">X1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Y1</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">x0</span> <span class="o">=</span> <span class="n">X0</span><span class="p">;</span>
@@ -477,9 +477,9 @@ var _hmt = _hmt || [];
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># _rectangle.pyx</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># _rectangle.pyx</span>
 
-<span class="n">cdef</span> <span class="n">extern</span> <span class="kn">from</span> <span class="s">&quot;Rectangle.h&quot;</span> <span class="n">namespace</span> <span class="s">&quot;shapes&quot;</span><span class="p">:</span>
+<span class="n">cdef</span> <span class="n">extern</span> <span class="kn">from</span> <span class="s2">&quot;Rectangle.h&quot;</span> <span class="n">namespace</span> <span class="s2">&quot;shapes&quot;</span><span class="p">:</span>
     <span class="n">cdef</span> <span class="n">cppclass</span> <span class="n">Rectangle</span><span class="p">:</span>
         <span class="n">Rectangle</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">except</span> <span class="o">+</span>
         <span class="nb">int</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span>
@@ -492,7 +492,7 @@ var _hmt = _hmt || [];
         <span class="k">return</span> <span class="n">area</span>
         <span class="o">...</span>
     <span class="k">finally</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">rec</span>     <span class="c"># delete heap allocated object</span>
+        <span class="k">del</span> <span class="n">rec</span>     <span class="c1"># delete heap allocated object</span>
 </pre></div>
 </td></tr></table></div>
 <p><code>func()</code>就是对外提供的接口。当然如果要对外提供整个类的话，可以用<code>cdef class</code>把整个类都封装一遍。参见<a href="http://docs.cython.org/en/latest/src/userguide/wrapping_CPlusPlus.html#create-cython-wrapper-class">封装整个类</a>。</p>
@@ -508,7 +508,7 @@ var _hmt = _hmt || [];
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">cdef</span> <span class="n">extern</span> <span class="n">void</span> <span class="n">c_nead_array</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">short</span><span class="o">*</span> <span class="n">arrary</span><span class="p">)</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">cdef</span> <span class="n">extern</span> <span class="n">void</span> <span class="n">c_nead_array</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">short</span><span class="o">*</span> <span class="n">arrary</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="nb">int</span><span class="p">[:,:]</span> <span class="n">array</span><span class="p">):</span>
     <span class="n">c_nead_array</span><span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
@@ -521,7 +521,7 @@ var _hmt = _hmt || [];
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cython.operator</span> <span class="nn">cimport</span> <span class="nn">dereference</span> <span class="nn">as</span> <span class="nn">deref</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cython.operator</span> <span class="nn">cimport</span> <span class="nn">dereference</span> <span class="nn">as</span> <span class="nn">deref</span>
 
 <span class="n">cdef</span> <span class="n">extern</span> <span class="n">func</span><span class="p">(</span><span class="n">Image</span> <span class="n">img</span><span class="p">)</span>
 <span class="n">cdef</span> <span class="n">Image</span> <span class="o">*</span><span class="n">imgptr</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Image</span><span class="p">()</span>
@@ -538,13 +538,13 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># setup.py</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># setup.py</span>
 <span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 <span class="kn">from</span> <span class="nn">Cython.Build</span> <span class="kn">import</span> <span class="n">cythonize</span>
 
 <span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">(</span>
-       <span class="s">&quot;test.pyx&quot;</span><span class="p">,</span>
-       <span class="n">language</span><span class="o">=</span><span class="s">&quot;c++&quot;</span><span class="p">,</span> <span class="c">## 如果是C++就需要</span>
+       <span class="s2">&quot;test.pyx&quot;</span><span class="p">,</span>
+       <span class="n">language</span><span class="o">=</span><span class="s2">&quot;c++&quot;</span><span class="p">,</span> <span class="c1">## 如果是C++就需要</span>
       <span class="p">))</span>
 </pre></div>
 </td></tr></table></div>
@@ -566,7 +566,7 @@ var _hmt = _hmt || [];
 15
 16
 17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># setup.py</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># setup.py</span>
 <span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
 <span class="kn">from</span> <span class="nn">Cython.Build</span> <span class="kn">import</span> <span class="n">cythonize</span>
 <span class="kn">from</span> <span class="nn">distutils.extension</span> <span class="kn">import</span> <span class="n">Extension</span>
@@ -574,14 +574,14 @@ var _hmt = _hmt || [];
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="n">extension</span> <span class="o">=</span> <span class="n">Extension</span><span class="p">(</span>
-           <span class="s">&quot;sub&quot;</span><span class="p">,</span>
-           <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;sub.pyx&quot;</span><span class="p">],</span>
-           <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">get_include</span><span class="p">()],</span> <span class="c"># 如果用到numpy</span>
-           <span class="n">language</span><span class="o">=</span><span class="s">&quot;c++&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;sub&quot;</span><span class="p">,</span>
+           <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sub.pyx&quot;</span><span class="p">],</span>
+           <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">get_include</span><span class="p">()],</span> <span class="c1"># 如果用到numpy</span>
+           <span class="n">language</span><span class="o">=</span><span class="s2">&quot;c++&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">setup</span><span class="p">(</span>
-        <span class="n">cmdclass</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;build_ext&#39;</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
+        <span class="n">cmdclass</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;build_ext&#39;</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
         <span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">(</span><span class="n">extension</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
@@ -597,15 +597,15 @@ var _hmt = _hmt || [];
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">Extension</span><span class="p">(</span>
-           <span class="s">&quot;_test&quot;</span><span class="p">,</span>                             <span class="c"># name1</span>
-           <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;_test.pyx&quot;</span><span class="p">,</span> <span class="s">&quot;test.cpp&quot;</span><span class="p">],</span>   <span class="c"># 如果有cpp源码</span>
+           <span class="s2">&quot;_test&quot;</span><span class="p">,</span>                             <span class="c1"># name1</span>
+           <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_test.pyx&quot;</span><span class="p">,</span> <span class="s2">&quot;test.cpp&quot;</span><span class="p">],</span>   <span class="c1"># 如果有cpp源码</span>
            <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">get_include</span><span class="p">()],</span>
-           <span class="n">language</span><span class="o">=</span><span class="s">&quot;c++&quot;</span><span class="p">),</span>
+           <span class="n">language</span><span class="o">=</span><span class="s2">&quot;c++&quot;</span><span class="p">),</span>
         <span class="n">Extension</span><span class="p">(</span>
-            <span class="s">&quot;_test2&quot;</span><span class="p">,</span>                           <span class="c"># name2</span>
-            <span class="n">source</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;_test2.pyx&quot;</span><span class="p">,</span> <span class="s">&quot;test.c&quot;</span><span class="p">],</span>    <span class="c"># ditto</span>
+            <span class="s2">&quot;_test2&quot;</span><span class="p">,</span>                           <span class="c1"># name2</span>
+            <span class="n">source</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_test2.pyx&quot;</span><span class="p">,</span> <span class="s2">&quot;test.c&quot;</span><span class="p">],</span>    <span class="c1"># ditto</span>
         <span class="p">)</span>
 <span class="p">]</span>
 </pre></div>
@@ -616,7 +616,7 @@ var _hmt = _hmt || [];
 
     Extension的name务必要和.pyx的文件名要保持一致。
 </div><p>最后，你只需要执行setup.py:</p>
-<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>python setup.py build_ext --inplace
+<div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>python setup.py build_ext --inplace
 </pre></div>
 </td></tr></table></div>
 <h2 id="toc-10">其他</h2>

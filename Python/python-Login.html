@@ -96,13 +96,13 @@ var _hmt = _hmt || [];
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">HttpClient</span><span class="p">:</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HttpClient</span><span class="p">:</span>
   <span class="n">__cookie</span> <span class="o">=</span> <span class="n">cookielib</span><span class="o">.</span><span class="n">CookieJar</span><span class="p">()</span>
   <span class="n">__req</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPCookieProcessor</span><span class="p">(</span><span class="n">__cookie</span><span class="p">))</span>
   <span class="n">__req</span><span class="o">.</span><span class="n">addheaders</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c">#(&#39;Accept&#39;, &#39;application/javascript, */*;q=0.8&#39;),</span>
-    <span class="p">(</span><span class="s">&#39;Accept&#39;</span><span class="p">,</span> <span class="s">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="s">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36&quot;</span><span class="p">)</span>
+    <span class="c1">#(&#39;Accept&#39;, &#39;application/javascript, */*;q=0.8&#39;),</span>
+    <span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="s1">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="s2">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36&quot;</span><span class="p">)</span>
   <span class="p">]</span>
   <span class="n">urllib2</span><span class="o">.</span><span class="n">install_opener</span><span class="p">(</span><span class="n">__req</span><span class="p">)</span>
 
@@ -123,11 +123,11 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">Get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">refer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">refer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="n">req</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span><span class="s">&#39;%20&#39;</span><span class="p">))</span>
+      <span class="n">req</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;%20&#39;</span><span class="p">))</span>
       <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">refer</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
-          <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">&#39;Referer&#39;</span><span class="p">,</span> <span class="n">refer</span><span class="p">)</span>
+          <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Referer&#39;</span><span class="p">,</span> <span class="n">refer</span><span class="p">)</span>
       <span class="k">return</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -141,11 +141,11 @@ var _hmt = _hmt || [];
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">Post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">refer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">refer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
       <span class="n">req</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
       <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">refer</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
-        <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s">&#39;Referer&#39;</span><span class="p">,</span> <span class="n">refer</span><span class="p">)</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Referer&#39;</span><span class="p">,</span> <span class="n">refer</span><span class="p">)</span>
       <span class="k">return</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -159,9 +159,9 @@ var _hmt = _hmt || [];
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">Download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
-    <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">))</span>
     <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">parsed_link</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
     <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
@@ -207,24 +207,24 @@ var _hmt = _hmt || [];
 36
 37
 38
-39</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">Download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+39</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">chunk_report</span><span class="p">(</span><span class="n">bytes_so_far</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">total_size</span><span class="p">):</span>
       <span class="n">percent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bytes_so_far</span><span class="o">*</span><span class="mi">100</span> <span class="o">/</span> <span class="n">total_size</span><span class="p">)</span>
-      <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;Downloading&quot;</span> <span class="o">+</span> <span class="s">&#39;  &#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; ...(</span><span class="si">%.1f</span><span class="s"> KB/</span><span class="si">%.1f</span><span class="s"> KB)[</span><span class="si">%d%%</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bytes_so_far</span><span class="o">/</span><span class="mf">1024.0</span><span class="p">,</span> <span class="n">total_size</span><span class="o">/</span><span class="mf">1024.0</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
+      <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;Downloading&quot;</span> <span class="o">+</span> <span class="s1">&#39;  &#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ...(</span><span class="si">%.1f</span><span class="s2"> KB/</span><span class="si">%.1f</span><span class="s2"> KB)[</span><span class="si">%d%%</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bytes_so_far</span><span class="o">/</span><span class="mf">1024.0</span><span class="p">,</span> <span class="n">total_size</span><span class="o">/</span><span class="mf">1024.0</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
       <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
       <span class="k">if</span> <span class="n">bytes_so_far</span> <span class="o">&gt;=</span> <span class="n">total_size</span><span class="p">:</span>
-         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
          <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">chunk_read</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">,</span> <span class="n">report_hook</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">total_size</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;Content-Length&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">total_size</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
         <span class="n">total_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_size</span><span class="p">)</span>
         <span class="n">bytes_so_far</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
         <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">chunk</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span>
@@ -238,8 +238,8 @@ var _hmt = _hmt || [];
                 <span class="n">report_hook</span><span class="p">(</span><span class="n">bytes_so_far</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">total_size</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
-    <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">))</span>
     <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">parsed_link</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -251,7 +251,7 @@ var _hmt = _hmt || [];
 <p>注意，经常有些网站喜欢在url里面放一些汉字或者空格，可以用urlparse来处理：</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">))</span>
 <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">parsed_link</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
 <span class="n">url</span> <span class="o">=</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
 </pre></div>
@@ -260,7 +260,6 @@ var _hmt = _hmt || [];
 <h2 id="toc-4">上层逻辑</h2>
 <h3 id="toc-5">抓包分析</h3>
 <p>就用Chrome或者firefox抓，按下<code>F12</code>，然后点选<code>Network</code>，然后点击登陆，就可以看到，提交了那些信息。有时候网页可能会调用js，其实js最后还是会调用post，一样也可以用python来处理。</p>
-<p><img src="http://7xl4a3.com1.z0.glb.clouddn.com/Screenshot%20from%202015-10-05%2022-09-51.png" alt="Chrome" title="chrome大法好"></p>
 <h3 id="toc-6">正则处理</h3>
 <p>人登陆靠眼睛识别要点击的按钮，机器靠pattern正则识别要访问的url。下面这个函数返回html第一次出现的rex，ex控制允不允许为空，er是你希望的错误logging内容。</p>
 <div class="source"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -272,7 +271,7 @@ var _hmt = _hmt || [];
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">rex</span><span class="p">,</span> <span class="n">er</span><span class="p">,</span> <span class="n">ex</span><span class="p">):</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">rex</span><span class="p">,</span> <span class="n">er</span><span class="p">,</span> <span class="n">ex</span><span class="p">):</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">rex</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">ex</span><span class="p">:</span>
@@ -280,7 +279,7 @@ var _hmt = _hmt || [];
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">er</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">er</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
     <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
@@ -290,11 +289,11 @@ var _hmt = _hmt || [];
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-    <span class="n">filename</span><span class="o">=</span><span class="s">&#39;UCS.log&#39;</span><span class="p">,</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;UCS.log&#39;</span><span class="p">,</span>
     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
-    <span class="n">format</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s">  </span><span class="si">%(filename)s</span><span class="s">[line:</span><span class="si">%(lineno)d</span><span class="s">] </span><span class="si">%(levelname)s</span><span class="s"> </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">,</span>
-    <span class="n">datefmt</span><span class="o">=</span><span class="s">&#39;%a, </span><span class="si">%d</span><span class="s"> %b %Y %H:%M:%S&#39;</span><span class="p">,</span>
+    <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">  </span><span class="si">%(filename)s</span><span class="s1">[line:</span><span class="si">%(lineno)d</span><span class="s1">] </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%a, </span><span class="si">%d</span><span class="s1"> %b %Y %H:%M:%S&#39;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
@@ -303,11 +302,11 @@ var _hmt = _hmt || [];
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">session</span> <span class="o">=</span> <span class="n">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">r&#39;session=(.+?)&amp;&#39;</span><span class="p">,</span> <span class="s">&#39;get session error&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">_mid</span> <span class="o">=</span> <span class="n">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">r&#39;_mid=(.+?)&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;get mid error&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">guid</span> <span class="o">=</span> <span class="n">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">r&#39;guid=(.+?)&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;get guid error&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;session=(.+?)&amp;&#39;</span><span class="p">,</span> <span class="s1">&#39;get session error&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">_mid</span> <span class="o">=</span> <span class="n">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;_mid=(.+?)&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;get mid error&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">guid</span> <span class="o">=</span> <span class="n">get_revalue</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;guid=(.+?)&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;get guid error&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">req</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;http://xxx.xxx.xxx/xxx?session={0}&amp;_mid={1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">_mid</span><span class="p">))</span>
+<span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">req</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;http://xxx.xxx.xxx/xxx?session={0}&amp;_mid={1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">_mid</span><span class="p">))</span>
 </pre></div>
 </td></tr></table></div>
 <p>另外附上<a href="http://tool.oschina.net/regex">正则测试</a></p>
